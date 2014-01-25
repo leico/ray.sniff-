@@ -3,6 +3,7 @@ ray.sniff-
 
 record our web space
 
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/EsE90BRTuCc/0.jpg)](http://www.youtube.com/watch?v=EsE90BRTuCc)
 
 私たちは日常的にネットワークを空間と認識しています。
 もし空間ならば、私たちはその空間を録音することが、
