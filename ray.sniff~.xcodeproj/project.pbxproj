@@ -1,0 +1,263 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4A018D6E13CEBA6600F0F092 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A018D6D13CEBA6600F0F092 /* main.cpp */; };
+		4AE68B86145A18E50034BF44 /* raysniff.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AE68B84145A18E50034BF44 /* raysniff.h */; };
+		4AE68B87145A18E50034BF44 /* raysniff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE68B85145A18E50034BF44 /* raysniff.cpp */; };
+		4AE68C0A145A194B0034BF44 /* Packet.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AE68C07145A194B0034BF44 /* Packet.h */; };
+		4AE68C0B145A194B0034BF44 /* raysniff_core.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AE68C08145A194B0034BF44 /* raysniff_core.h */; };
+		4AE68C0C145A194B0034BF44 /* raysniff_core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE68C09145A194B0034BF44 /* raysniff_core.cpp */; };
+		4AE68C0F145A19570034BF44 /* libpcap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE68C0E145A19570034BF44 /* libpcap.dylib */; };
+		9C04292F1893CFDA00D703F6 /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */; };
+		9C0429311893D00C00D703F6 /* MaxAudioAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C0429301893D00C00D703F6 /* MaxAudioAPI.framework */; };
+		9CBEED4F1893D267008DBBEB /* MaxAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBEED4E1893D267008DBBEB /* MaxAPI.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4A018D6D13CEBA6600F0F092 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4AAD6F8D13CE8ABD0036FB6D /* ray.sniff~.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ray.sniff~.mxo"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AE68B84145A18E50034BF44 /* raysniff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = raysniff.h; sourceTree = "<group>"; };
+		4AE68B85145A18E50034BF44 /* raysniff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = raysniff.cpp; sourceTree = "<group>"; };
+		4AE68C07145A194B0034BF44 /* Packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packet.h; sourceTree = "<group>"; };
+		4AE68C08145A194B0034BF44 /* raysniff_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = raysniff_core.h; sourceTree = "<group>"; };
+		4AE68C09145A194B0034BF44 /* raysniff_core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = raysniff_core.cpp; sourceTree = "<group>"; };
+		4AE68C0E145A19570034BF44 /* libpcap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpcap.dylib; path = usr/lib/libpcap.dylib; sourceTree = SDKROOT; };
+		9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../../maxmspsdk.xcconfig; sourceTree = "<group>"; };
+		9C0429301893D00C00D703F6 /* MaxAudioAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAudioAPI.framework; path = "../../../c74support/msp-includes/MaxAudioAPI.framework"; sourceTree = "<group>"; };
+		9CBEED4E1893D267008DBBEB /* MaxAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAPI.framework; path = "../../../c74support/max-includes/MaxAPI.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2FBBEADC08F335360078DB84 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4AE68C0F145A19570034BF44 /* libpcap.dylib in Frameworks */,
+				9C0429311893D00C00D703F6 /* MaxAudioAPI.framework in Frameworks */,
+				9CBEED4F1893D267008DBBEB /* MaxAPI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* iterator */ = {
+			isa = PBXGroup;
+			children = (
+				9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */,
+				08FB77ADFE841716C02AAC07 /* Source */,
+				089C1671FE841209C02AAC07 /* Frameworks */,
+				4AAD6F8E13CE8ABD0036FB6D /* Products */,
+			);
+			name = iterator;
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9CBEED4E1893D267008DBBEB /* MaxAPI.framework */,
+				9C0429301893D00C00D703F6 /* MaxAudioAPI.framework */,
+				4AE68C0E145A19570034BF44 /* libpcap.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		08FB77ADFE841716C02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				4AE68C07145A194B0034BF44 /* Packet.h */,
+				4AE68C08145A194B0034BF44 /* raysniff_core.h */,
+				4AE68C09145A194B0034BF44 /* raysniff_core.cpp */,
+				4AE68B84145A18E50034BF44 /* raysniff.h */,
+				4AE68B85145A18E50034BF44 /* raysniff.cpp */,
+				4A018D6D13CEBA6600F0F092 /* main.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		4AAD6F8E13CE8ABD0036FB6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4AAD6F8D13CE8ABD0036FB6D /* ray.sniff~.mxo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2FBBEAD708F335360078DB84 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4AE68B86145A18E50034BF44 /* raysniff.h in Headers */,
+				4AE68C0A145A194B0034BF44 /* Packet.h in Headers */,
+				4AE68C0B145A194B0034BF44 /* raysniff_core.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2FBBEAD608F335360078DB84 /* max-external */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2FBBEAE008F335360078DB84 /* Build configuration list for PBXNativeTarget "max-external" */;
+			buildPhases = (
+				2FBBEAD708F335360078DB84 /* Headers */,
+				2FBBEAD808F335360078DB84 /* Resources */,
+				2FBBEADA08F335360078DB84 /* Sources */,
+				2FBBEADC08F335360078DB84 /* Frameworks */,
+				2FBBEADF08F335360078DB84 /* Rez */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "max-external";
+			productName = iterator;
+			productReference = 4AAD6F8D13CE8ABD0036FB6D /* ray.sniff~.mxo */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 2FBBEACF08F335010078DB84 /* Build configuration list for PBXProject "ray.sniff~" */;
+			compatibilityVersion = "Xcode 3.0";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 089C166AFE841209C02AAC07 /* iterator */;
+			productRefGroup = 4AAD6F8E13CE8ABD0036FB6D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2FBBEAD608F335360078DB84 /* max-external */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2FBBEAD808F335360078DB84 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C04292F1893CFDA00D703F6 /* maxmspsdk.xcconfig in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		2FBBEADF08F335360078DB84 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2FBBEADA08F335360078DB84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A018D6E13CEBA6600F0F092 /* main.cpp in Sources */,
+				4AE68B87145A18E50034BF44 /* raysniff.cpp in Sources */,
+				4AE68C0C145A194B0034BF44 /* raysniff_core.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2FBBEAD008F335010078DB84 /* Development */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
+			};
+			name = Development;
+		};
+		2FBBEAD108F335010078DB84 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
+			};
+			name = Deployment;
+		};
+		2FBBEAE108F335360078DB84 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../c74support/max-includes\"",
+					"\"$(SRCROOT)/../c74support/msp-includes\"",
+					"\"$(SRCROOT)/../c74support/jit-includes\"",
+					"\"$(SRCROOT)/../../../c74support/msp-includes\"",
+					"\"$(SRCROOT)/../../../c74support/max-includes\"",
+				);
+				GCC_OPTIMIZATION_LEVEL = 0;
+			};
+			name = Development;
+		};
+		2FBBEAE208F335360078DB84 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../c74support/max-includes\"",
+					"\"$(SRCROOT)/../c74support/msp-includes\"",
+					"\"$(SRCROOT)/../c74support/jit-includes\"",
+					"\"$(SRCROOT)/../../../c74support/msp-includes\"",
+					"\"$(SRCROOT)/../../../c74support/max-includes\"",
+				);
+			};
+			name = Deployment;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2FBBEACF08F335010078DB84 /* Build configuration list for PBXProject "ray.sniff~" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FBBEAD008F335010078DB84 /* Development */,
+				2FBBEAD108F335010078DB84 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		2FBBEAE008F335360078DB84 /* Build configuration list for PBXNativeTarget "max-external" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FBBEAE108F335360078DB84 /* Development */,
+				2FBBEAE208F335360078DB84 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}
