@@ -24,7 +24,7 @@ When we access to any sites or upload any files, those data make sounds. ray.sni
 
 If you dive to the Web with ray.sniff~, you have a special experience. You will dive deeper than usual times for to find good sounds. You will perceive you see the Web as sound source.
 
-Also, You will know raw data is rich contents. ray.sniff~ indicate a another view point of raw data.
+Also, You will know raw data is rich contents. ray.sniff~ indicate a another perspective of raw data.
 
 Now this object is beta, has many points of improvement, such as
 
