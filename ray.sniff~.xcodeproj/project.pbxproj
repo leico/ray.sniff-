@@ -129,6 +129,8 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 2FBBEACF08F335010078DB84 /* Build configuration list for PBXProject "ray.sniff~" */;
 			compatibilityVersion = "Xcode 3.0";
 			developmentRegion = English;
@@ -185,8 +187,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
 			};
 			name = Development;
@@ -195,8 +196,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
 			};
 			name = Deployment;
@@ -204,8 +204,7 @@
 		2FBBEAE108F335360078DB84 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -216,14 +215,14 @@
 					"\"$(SRCROOT)/../../../c74support/max-includes\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
+				SDKROOT = macosx10.6;
 			};
 			name = Development;
 		};
 		2FBBEAE208F335360078DB84 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -233,6 +232,7 @@
 					"\"$(SRCROOT)/../../../c74support/msp-includes\"",
 					"\"$(SRCROOT)/../../../c74support/max-includes\"",
 				);
+				SDKROOT = macosx10.6;
 			};
 			name = Deployment;
 		};
