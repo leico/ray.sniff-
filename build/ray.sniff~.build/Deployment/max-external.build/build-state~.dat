@@ -1,20 +1,23 @@
 Tmax-external
 v7
 r0
-t341819566.410685
+t418976811.493787
 cCheck dependencies
-cProcessInfoPlistFile /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/Info.plist /Users/leico/pro/Max/External/ray.sniff~/../Info.plist
-cSymLink /Users/leico/pro/Max/External/ray.sniff~/build/Deployment/ray.sniff~.mxo /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo
-cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o /Users/leico/pro/Max/External/ray.sniff~/main.cpp normal ppc c++ com.apple.compilers.gcc.4_0
-cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp normal ppc c++ com.apple.compilers.gcc.4_0
-cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp normal ppc c++ com.apple.compilers.gcc.4_0
-cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o /Users/leico/pro/Max/External/ray.sniff~/main.cpp normal i386 c++ com.apple.compilers.gcc.4_0
-cLd /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~ normal ppc
-cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp normal i386 c++ com.apple.compilers.gcc.4_0
-cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp normal i386 c++ com.apple.compilers.gcc.4_0
-cLd /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~ normal i386
-cCreateUniversalBinary /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/MacOS/ray.sniff~ normal "ppc i386"
-cTouch /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo
+cProcessInfoPlistFile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Info.plist /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../Info.plist
+cSymLink /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/ray.sniff~.mxo /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo
+cCpResource build/UninstalledProducts/ray.sniff~.mxo/Contents/Resources/maxmspsdk.xcconfig ../../maxmspsdk.xcconfig
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/main.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff_core.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp normal i386 c++ com.apple.compilers.gcc.4_2
+cLd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/ray.sniff~ normal x86_64
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp normal i386 c++ com.apple.compilers.gcc.4_2
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp normal i386 c++ com.apple.compilers.gcc.4_2
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp normal ppc c++ com.apple.compilers.gcc.4_2
+cLd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~ normal i386
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp normal ppc c++ com.apple.compilers.gcc.4_2
+cCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp normal ppc c++ com.apple.compilers.gcc.4_2
+cLd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~ normal ppc
 
 N/Developer/SDKs/MacOSX10.5.sdk
 c000000004B7E366000000000000000EE
@@ -120,6 +123,81 @@ N/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libpcap.dylib
 c000000004B760D02000000000000C78C
 t1266027778
 s51084
+
+N/Developer/SDKs/MacOSX10.6.sdk
+c000000004BF4701900000000000000EE
+t1274310681
+s238
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h
+c000000004B4834EA00000000000005FF
+t1263023338
+s1535
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/QuickTime.framework/Headers/QuickTime.h
+c000000004B4818320000000000000659
+t1263015986
+s1625
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/assert.h
+c000000004AC59C810000000000000DCB
+t1254464641
+s3531
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/ctype.h
+c000000004AC59C810000000000002C18
+t1254464641
+s11288
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/libkern/OSAtomic.h
+c000000004AC59C810000000000002519
+t1254464641
+s9497
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/math.h
+c000000004AC599B500000000000004F1
+t1254463925
+s1265
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/pcap.h
+c000000004B90C2CB0000000000000910
+t1267778251
+s2320
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/setjmp.h
+c000000004AC59C810000000000000438
+t1254464641
+s1080
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/stdio.h
+c000000004AC59C820000000000004174
+t1254464642
+s16756
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/stdlib.h
+c000000004AC59C820000000000002DF5
+t1254464642
+s11765
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/string.h
+c000000004AC59C820000000000001731
+t1254464642
+s5937
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/sys/types.h
+c000000004B90BBAB0000000000002905
+t1267776427
+s10501
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/lib/gcc/powerpc-apple-darwin10/4.2.1/include/stdarg.h
+c000000004AC59DC600000000000010DD
+t1254464966
+s4317
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libpcap.dylib
+c000000004BF47016000000000000B588
+t1274310678
+s46472
 
 N/Users/leico/pro/Max/External/c74support/jit-includes/JitterAPI.framework/JitterAPI
 c000000004D3E62A2000000000035E3F4
@@ -307,19 +385,19 @@ s14724
 i"ext_systhread.h"
 
 N/Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo
-t1320126766
+t1330860442
 s102
 
 N/Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/Info.plist
-t1319756250
+t1330860346
 s817
 
 N/Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/MacOS/ray.sniff~
-t1320126766
+t1330860442
 s62944
 
 N/Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/PkgInfo
-t1319756250
+t1330860346
 s8
 
 N/Users/leico/pro/Max/External/ray.sniff~/../Info.plist
@@ -345,11 +423,11 @@ t3
 s71
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o
-t1320126764
+t1330860404
 s14244
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~
-t1320126766
+t1330860442
 s30176
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~.LinkFileList
@@ -358,19 +436,19 @@ t1320126757
 s376
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o
-t1320126765
-s22308
+t1330860427
+s22344
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o
-t1320126766
+t1330860442
 s75896
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o
-t1320126762
+t1330860402
 s14932
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~
-t1320126764
+t1330860442
 s26776
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~.LinkFileList
@@ -379,11 +457,11 @@ t1320126757
 s373
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o
-t1320126762
-s25328
+t1330860425
+s25364
 
 N/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o
-t1320126764
+t1330860442
 s85856
 
 N/Users/leico/pro/Max/External/ray.sniff~/main.cpp
@@ -398,9 +476,9 @@ i"ext_obex.h"
 i"z_dsp.h"
 
 N/Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp
-c000000004EABD251000000000000088D
-t1319883345
-s2189
+c000000004F5351860000000000000893
+t1330860422
+s2195
 i"ext.h"
 i"ext_obex.h"
 i"z_dsp.h"
@@ -408,24 +486,24 @@ i"raysniff.h"
 i"raysniff_core.h"
 
 N/Users/leico/pro/Max/External/ray.sniff~/raysniff.h
-c000000004EAA3B1A000000000000024F
-t1319779098
-s591
+c000000004F535161000000000000025A
+t1330860385
+s602
 i"ext.h"
 i"ext_obex.h"
 i"z_dsp.h"
 i"raysniff_core.h"
 
 N/Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp
-c000000004EABD2EB0000000000001B2D
-t1319883499
-s6957
+c000000004F5351960000000000001A3F
+t1330860438
+s6719
 i"raysniff_core.h"
 
 N/Users/leico/pro/Max/External/ray.sniff~/raysniff_core.h
-c000000004EABD2DE000000000000043A
-t1319883486
-s1082
+c000000004F5345120000000000000462
+t1330857234
+s1122
 i<list>
 i<string>
 i<sstream>
@@ -434,13 +512,415 @@ i"ext_obex.h"
 i"z_dsp.h"
 i"Packet.h"
 
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/MaxAPI.framework/MaxAPI
+c00000000526464F00000000000139C40
+t1382311152
+s1285184
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch
+c00000000526464F000000000000000A4
+t1382311152
+s164
+i<Carbon/Carbon.h>
+i<QuickTime/QuickTime.h>
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/MaxAudioAPI.framework/MaxAudioAPI
+c00000000526464F000000000000D9228
+t1382311152
+s889384
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../Info.plist
+c000000005269E9BC00000000000003EC
+t1382672828
+s1004
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../c74support/max-includes/macho-prefix.pch
+c00000000000000000000000000000000
+t2
+s0
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../maxmspsdk.xcconfig
+c000000005348DC950000000000000AD2
+t1397283989
+s2770
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../Info.plist
+c000000005269E9BC00000000000003EC
+t1382672828
+s1004
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/Packet.h
+c000000005348D96C00000000000000C1
+t1397283180
+s193
+i<pcap.h>
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/ray.sniff~.mxo
+t3
+s100
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo
+t2
+s0
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Info.plist
+t1397284000
+s819
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/MacOS/ray.sniff~
+t2
+s0
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/PkgInfo
+t1397284000
+s8
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Resources/maxmspsdk.xcconfig
+t1397284000
+s2770
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o
+t1397284004
+s39232
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~
+t1397284007
+s25580
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~.LinkFileList
+c000000005348DCA000000000000001B1
+t1397284000
+s433
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o
+t1397284007
+s49248
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o
+t1397284007
+s115700
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o
+t1397284009
+s39728
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~
+t2
+s0
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~.LinkFileList
+c000000005348DCA000000000000001AE
+t1397284000
+s430
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o
+t1397284009
+s50940
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o
+t1397284011
+s118540
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/main.o
+t1397284002
+s39472
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/ray.sniff~
+t1397284004
+s26480
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/ray.sniff~.LinkFileList
+c000000005348DCA000000000000001B7
+t1397284000
+s439
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff.o
+t1397284002
+s51220
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff_core.o
+t1397284004
+s119180
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp
+c000000005348D96C00000000000000F0
+t1397283180
+s240
+i"PACKET.h"
+i"raysniff.h"
+i"raysniff_core.h"
+i"ext.h"
+i"ext_obex.h"
+i"z_dsp.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp
+c000000005348D96C0000000000000B1E
+t1397283180
+s2846
+i"ext.h"
+i"ext_obex.h"
+i"z_dsp.h"
+i"raysniff.h"
+i"raysniff_core.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.h
+c000000005348D96C0000000000000379
+t1397283180
+s889
+i"ext.h"
+i"ext_obex.h"
+i"z_dsp.h"
+i"raysniff_core.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp
+c000000005348D96C0000000000002019
+t1397283180
+s8217
+i"raysniff_core.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.h
+c000000005348D96C00000000000004DB
+t1397283180
+s1243
+i<list>
+i<string>
+i<sstream>
+i"ext.h"
+i"ext_obex.h"
+i"z_dsp.h"
+i"Packet.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/commonsyms.h
+c00000000526464F0000000000001CD52
+t1382311152
+s118098
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext.h
+c00000000526464F00000000000000786
+t1382311152
+s1926
+i"ext_common.h"
+i"max_types.h"
+i"ext_prefix.h"
+i"ext_mess.h"
+i"ext_maxtypes.h"
+i"ext_byteorder.h"
+i"ext_sysmem.h"
+i"ext_sysfile.h"
+i"ext_systime.h"
+i"ext_expr.h"
+i"ext_path.h"
+i"ext_wind.h"
+i"ext_proto.h"
+i"ext_atomarray.h"
+i"ext_atombuf.h"
+i"ext_obstring.h"
+i"ext_hashtab.h"
+i"ext_dictionary.h"
+i"ext_obex_util.h"
+i"commonsyms.h"
+i"ext_strings.h"
+i"ext_obex.h"
+i"ext_systhread.h"
+i"ext_drag.h"
+i"jpatcher_api.h"
+i"ext_charset.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_atomarray.h
+c00000000526464F00000000000002024
+t1382311152
+s8228
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_atombuf.h
+c00000000526464F000000000000006C7
+t1382311152
+s1735
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_atomic.h
+c00000000526464F00000000000001012
+t1382311152
+s4114
+i<libkern/OSAtomic.h>
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_byteorder.h
+c00000000526464F000000000000029D5
+t1382311152
+s10709
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_charset.h
+c00000000526464F00000000000000D94
+t1382311152
+s3476
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_common.h
+c00000000526464F0000000000000072F
+t1382311152
+s1839
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_dictionary.h
+c00000000526464F000000000000076E9
+t1382311152
+s30441
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_drag.h
+c00000000526464F00000000000000763
+t1382311152
+s1891
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_expr.h
+c00000000526464F00000000000000F19
+t1382311152
+s3865
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_hashtab.h
+c00000000526464F0000000000000396D
+t1382311152
+s14701
+i"ext_linklist.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_linklist.h
+c00000000526464F0000000000000549D
+t1382311152
+s21661
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_maxtypes.h
+c00000000526464F000000000000008E8
+t1382311152
+s2280
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_mess.h
+c00000000526464F00000000000002BA7
+t1382311152
+s11175
+i"max_types.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_obex.h
+c00000000526464F0000000000001776E
+t1382311152
+s96110
+i"ext_preprocessor.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_obex_util.h
+c00000000526464F0000000000001B522
+t1382311152
+s111906
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_obstring.h
+c00000000526464F0000000000000086A
+t1382311152
+s2154
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_path.h
+c00000000526464F00000000000005437
+t1382311152
+s21559
+i<Files.h>
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_prefix.h
+c00000000526464F00000000000002825
+t1382311152
+s10277
+i"max_types.h"
+i<MacTypes.h>
+i<sys/types.h>
+i<malloc.h>
+i<stdio.h>
+i<stdlib.h>
+i<stdarg.h>
+i<ctype.h>
+i<math.h>
+i<string.h>
+i<setjmp.h>
+i<assert.h>
+i<windows.h>
+i<richedit.h>
+i<commctrl.h>
+i"qtml.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_preprocessor.h
+c00000000526464F0000000000000388B
+t1382311152
+s14475
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_proto.h
+c00000000526464F000000000000134F0
+t1382311152
+s79088
+i"ext_proto_win.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_proto_win.h
+c00000000526464F0000000000000022D
+t1382311152
+s557
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_strings.h
+c00000000526464F00000000000000819
+t1382311152
+s2073
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_sysfile.h
+c00000000526464F000000000000026D4
+t1382311152
+s9940
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_sysmem.h
+c00000000526464F00000000000001711
+t1382311152
+s5905
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_systhread.h
+c00000000526464F00000000000001FFB
+t1382311152
+s8187
+i"ext_obex.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_systime.h
+c00000000526464F00000000000000C39
+t1382311152
+s3129
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/ext_wind.h
+c00000000526464F0000000000000080E
+t1382311152
+s2062
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/jpatcher_api.h
+c00000000526464F000000000000133C3
+t1382311152
+s78787
+i"jpatcher_syms.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/jpatcher_syms.h
+c00000000526464F00000000000001BDB
+t1382311152
+s7131
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/max_types.h
+c00000000526464F00000000000000FDE
+t1382311152
+s4062
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/msp-includes/z_dsp.h
+c00000000526464F00000000000003FEF
+t1382311152
+s16367
+i"z_sampletype.h"
+i"ext_systhread.h"
+i"ext_linklist.h"
+i"ext_atomic.h"
+
+N/Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/msp-includes/z_sampletype.h
+c00000000526464F00000000000000B12
+t1382311152
+s2834
+
 CCheck dependencies
 r0
-lSLF07#2@18"Check dependencies341819557#341819557#0(0"0(0#1#0"28429470871847012#0"0#
+lSLF07#2@18"Check dependencies418976800#418976800#0(0"0(0#1#0"4319178752#0"0#
 
 CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o /Users/leico/pro/Max/External/ray.sniff~/main.cpp normal i386 c++ com.apple.compilers.gcc.4_0
-s341819562.299360
-e341819564.194900
+s352553202.328315
+e352553204.170393
 r1
 xCompileC
 xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o
@@ -449,11 +929,24 @@ xnormal
 xi386
 xc++
 xcom.apple.compilers.gcc.4_0
-lSLF07#2@57"Compile /Users/leico/pro/Max/External/ray.sniff~/main.cpp341819562#341819564#0(0"0(0#0#49"/Users/leico/pro/Max/External/ray.sniff~/main.cpp8602347104#1792"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/main.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o0#
+lSLF07#2@57"Compile /Users/leico/pro/Max/External/ray.sniff~/main.cpp352553202#352553204#0(0"0(0#0#49"/Users/leico/pro/Max/External/ray.sniff~/main.cpp8615809152#1792"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/main.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp normal i386 c++ com.apple.compilers.gcc.4_2
+s418976802.631721
+e418976804.798142
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@76"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp418976802#418976804#0(0"0(0#0#68"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp4319178752#2377"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/main.o0#
 
 CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp normal i386 c++ com.apple.compilers.gcc.4_0
-s341819564.195042
-e341819565.838686
+s352553225.984703
+e352553227.893796
 r1
 xCompileC
 xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o
@@ -462,11 +955,27 @@ xnormal
 xi386
 xc++
 xcom.apple.compilers.gcc.4_0
-lSLF07#2@61"Compile /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp341819564#341819565#0(0"0(0#0#53"/Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp8603437504#1800"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o0#
+lSLF07#2@61"Compile /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp352553225#352553227#0(0"0(0#0#53"/Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp8624493120#1800"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp normal i386 c++ com.apple.compilers.gcc.4_2
+s418976804.770213
+e418976807.047788
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.gcc.4_2
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp: In function 'void raysniff::ObjInSig(raysniff::OBJECT*, t_signal**, short int*)':
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)
+lSLF07#2@80"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418976804#418976807#0(614"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp: In function 'void raysniff::ObjInSig(raysniff::OBJECT*, t_signal**, short int*)':/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)2(22@142"'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)418976806#156#229#0(6@72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418975980#86#0#86#0#33"'*' is deprecated (declared at *)0(22@142"'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)418976806#385#229#0(6@72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418975980#86#0#86#0#33"'*' is deprecated (declared at *)0(0#0#72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp4319178752#2385"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff.o0#
 
 CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp normal i386 c++ com.apple.compilers.gcc.4_0
-s341819564.415417
-e341819566.215205
+s352553240.010829
+e352553242.213044
 r1
 xCompileC
 xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o
@@ -475,11 +984,24 @@ xnormal
 xi386
 xc++
 xcom.apple.compilers.gcc.4_0
-lSLF07#2@66"Compile /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp341819564#341819566#0(0"0(0#0#58"/Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp8602999328#1810"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o0#
+lSLF07#2@66"Compile /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp352553240#352553242#0(0"0(0#0#58"/Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp8621601568#1810"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp normal i386 c++ com.apple.compilers.gcc.4_2
+s418976804.798249
+e418976807.393880
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@85"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp418976804#418976807#0(0"0(0#0#77"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp4319178752#2395"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/i386 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/raysniff_core.o0#
 
 CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o /Users/leico/pro/Max/External/ray.sniff~/main.cpp normal ppc c++ com.apple.compilers.gcc.4_0
-s341819557.998876
-e341819562.266934
+s352553200.467954
+e352553202.328212
 r1
 xCompileC
 xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o
@@ -488,11 +1010,24 @@ xnormal
 xppc
 xc++
 xcom.apple.compilers.gcc.4_0
-lSLF07#2@57"Compile /Users/leico/pro/Max/External/ray.sniff~/main.cpp341819557#341819562#0(0"0(0#0#49"/Users/leico/pro/Max/External/ray.sniff~/main.cpp8604280608#1799"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/main.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o0#
+lSLF07#2@57"Compile /Users/leico/pro/Max/External/ray.sniff~/main.cpp352553200#352553202#0(0"0(0#0#49"/Users/leico/pro/Max/External/ray.sniff~/main.cpp8622306624#1799"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/main.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp normal ppc c++ com.apple.compilers.gcc.4_2
+s418976807.047921
+e418976809.174949
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp
+xnormal
+xppc
+xc++
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@76"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp418976807#418976809#0(0"0(0#0#68"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp4319178752#2384"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/main.o0#
 
 CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp normal ppc c++ com.apple.compilers.gcc.4_0
-s341819557.999942
-e341819562.299248
+s352553224.152688
+e352553226.019950
 r1
 xCompileC
 xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o
@@ -501,11 +1036,27 @@ xnormal
 xppc
 xc++
 xcom.apple.compilers.gcc.4_0
-lSLF07#2@61"Compile /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp341819558#341819562#0(0"0(0#0#53"/Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp8604218144#1807"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o0#
+lSLF07#2@61"Compile /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp352553224#352553226#0(0"0(0#0#53"/Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp8600052448#1807"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/raysniff.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp normal ppc c++ com.apple.compilers.gcc.4_2
+s418976807.451538
+e418976809.611310
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp
+xnormal
+xppc
+xc++
+xcom.apple.compilers.gcc.4_2
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp: In function 'void raysniff::ObjInSig(raysniff::OBJECT*, t_signal**, short int*)':
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)
+lSLF07#2@80"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418976807#418976809#0(614"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp: In function 'void raysniff::ObjInSig(raysniff::OBJECT*, t_signal**, short int*)':/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)2(22@142"'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)418976809#156#229#0(6@72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418975980#86#0#86#0#33"'*' is deprecated (declared at *)0(22@142"'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)418976809#385#229#0(6@72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418975980#86#0#86#0#33"'*' is deprecated (declared at *)0(0#0#72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp4319178752#2392"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff.o0#
 
 CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp normal ppc c++ com.apple.compilers.gcc.4_0
-s341819562.267120
-e341819564.071274
+s352553239.535176
+e352553242.143667
 r1
 xCompileC
 xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o
@@ -514,40 +1065,183 @@ xnormal
 xppc
 xc++
 xcom.apple.compilers.gcc.4_0
-lSLF07#2@66"Compile /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp341819562#341819564#0(0"0(0#0#58"/Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp8603139424#1817"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o0#
+lSLF07#2@66"Compile /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp352553239#352553242#0(0"0(0#0#58"/Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp8633737920#1817"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Developer/SDKs/MacOSX10.5.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.5 -gdwarf-2 -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/include -I/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -I/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -include /Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max/External/ray.sniff~/raysniff_core.cpp -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp normal ppc c++ com.apple.compilers.gcc.4_2
+s418976809.175089
+e418976811.449505
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp
+xnormal
+xppc
+xc++
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@85"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp418976809#418976811#0(0"0(0#0#77"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp4319178752#2402"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -mtune=G4 -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/ppc -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/raysniff_core.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/main.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+s418976800.731291
+e418976802.550229
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/main.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@76"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp418976800#418976802#0(0"0(0#0#68"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp4319178752#2383"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/x86_64 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/main.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/main.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+s418976800.732583
+e418976802.631617
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.gcc.4_2
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp: In function 'void raysniff::ObjInSig(raysniff::OBJECT*, t_signal**, short int*)':
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)
+o/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)
+lSLF07#2@80"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418976800#418976802#0(614"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp: In function 'void raysniff::ObjInSig(raysniff::OBJECT*, t_signal**, short int*)':/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp:86: warning: 'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)2(22@142"'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)418976802#156#229#0(6@72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418975980#86#0#86#0#33"'*' is deprecated (declared at *)0(22@142"'dsp_add' is deprecated (declared at /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes/z_dsp.h:257)418976802#385#229#0(6@72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp418975980#86#0#86#0#33"'*' is deprecated (declared at *)0(0#0#72"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp4319178752#2391"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/x86_64 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff.o0#
+
+CCompileC build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff_core.o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+s418976802.550377
+e418976804.713030
+r1
+xCompileC
+xbuild/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff_core.o
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@85"Compile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp418976802#418976804#0(0"0(0#0#77"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp4319178752#2401"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os "-DDENORM_WANT_FIX = 1" "-DNO_TRANSLATION_SUPPORT = 1" -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/ray.sniff~.hmap -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/include -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources/x86_64 -I/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/DerivedSources -fvisibility=hidden -include /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/macho-prefix.pch -c /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/raysniff_core.cpp -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/raysniff_core.o0#
+
+CCpResource build/UninstalledProducts/ray.sniff~.mxo/Contents/Resources/maxmspsdk.xcconfig ../../maxmspsdk.xcconfig
+s418976800.720370
+e418976800.731189
+r1
+xCpResource
+xbuild/UninstalledProducts/ray.sniff~.mxo/Contents/Resources/maxmspsdk.xcconfig
+x../../maxmspsdk.xcconfig
+lSLF07#2@29"Copy ../../maxmspsdk.xcconfig418976800#418976800#0(0"0(0#0#84"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../maxmspsdk.xcconfig4319178752#441"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -strip-debug-symbols -resolve-src-symlinks /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../maxmspsdk.xcconfig /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Resources0#
 
 CCreateUniversalBinary /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/MacOS/ray.sniff~ normal "ppc i386"
-s341819566.348587
-e341819566.380002
+s352553242.429686
+e352553242.492656
 r1
 xCreateUniversalBinary
 x/Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/MacOS/ray.sniff~
 xnormal
 xppc i386
-lSLF07#2@96"CreateUniversalBinary ../../sdk-build/ray.sniff~.mxo/Contents/MacOS/ray.sniff~ normal "ppc i386"341819566#341819566#0(0"0(0#0#49"/Users/leico/pro/Max/External/ray.sniff~/ppc i3868603311072#431"    cd "/Users/leico/pro/Max/External/ray.sniff~"    /usr/bin/lipo -create /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~ /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~ -output /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/MacOS/ray.sniff~0#
+lSLF07#2@96"CreateUniversalBinary ../../sdk-build/ray.sniff~.mxo/Contents/MacOS/ray.sniff~ normal "ppc i386"352553242#352553242#0(0"0(0#0#49"/Users/leico/pro/Max/External/ray.sniff~/ppc i3868612718464#431"    cd "/Users/leico/pro/Max/External/ray.sniff~"    /usr/bin/lipo -create /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~ /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~ -output /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/MacOS/ray.sniff~0#
+
+CCreateUniversalBinary /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/MacOS/ray.sniff~ normal "x86_64 i386 ppc"
+r0
 
 CLd /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~ normal i386
-s341819566.215307
-e341819566.348475
+s352553242.213154
+e352553242.330979
 r1
 xLd
 x/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~
 xnormal
 xi386
-lSLF07#2@129"Link /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~341819566#341819566#0(0"0(0#0#0"8604094784#1093"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv MACOSX_DEPLOYMENT_TARGET 10.5    /Developer/usr/bin/g++-4.0 -arch i386 -bundle -isysroot /Developer/SDKs/MacOSX10.5.sdk -L/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -filelist /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~.LinkFileList -mmacosx-version-min=10.5 -framework MaxAPI -framework MaxAudioAPI -framework JitterAPI -lpcap -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~0#
+lSLF07#2@129"Link /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~352553242#352553242#0(0"0(0#0#0"8600715200#1093"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv MACOSX_DEPLOYMENT_TARGET 10.5    /Developer/usr/bin/g++-4.0 -arch i386 -bundle -isysroot /Developer/SDKs/MacOSX10.5.sdk -L/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -filelist /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~.LinkFileList -mmacosx-version-min=10.5 -framework MaxAPI -framework MaxAudioAPI -framework JitterAPI -lpcap -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~0#
 
 CLd /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~ normal ppc
-s341819564.071631
-e341819564.415310
+s352553242.143821
+e352553242.429574
 r1
 xLd
 x/Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~
 xnormal
 xppc
-lSLF07#2@128"Link /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~341819564#341819564#0(0"0(0#0#0"8603503168#1090"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv MACOSX_DEPLOYMENT_TARGET 10.5    /Developer/usr/bin/g++-4.0 -arch ppc -bundle -isysroot /Developer/SDKs/MacOSX10.5.sdk -L/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -filelist /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~.LinkFileList -mmacosx-version-min=10.5 -framework MaxAPI -framework MaxAudioAPI -framework JitterAPI -lpcap -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~0#
+lSLF07#2@128"Link /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~352553242#352553242#0(0"0(0#0#0"8622307968#1090"    cd "/Users/leico/pro/Max/External/ray.sniff~"    setenv MACOSX_DEPLOYMENT_TARGET 10.5    /Developer/usr/bin/g++-4.0 -arch ppc -bundle -isysroot /Developer/SDKs/MacOSX10.5.sdk -L/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/build/Deployment -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/max-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/msp-includes -F/Users/leico/pro/Max/External/ray.sniff~/../c74support/jit-includes -filelist /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~.LinkFileList -mmacosx-version-min=10.5 -framework MaxAPI -framework MaxAudioAPI -framework JitterAPI -lpcap -o /Users/leico/pro/Max/External/ray.sniff~/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~0#
+
+CLd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~ normal i386
+s418976807.393975
+e418976807.451391
+r1
+xLd
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~
+xnormal
+xi386
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not found
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not found
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not found
+lSLF07#2@148"Link /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~418976807#418976807#0(405"ld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not foundld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not foundld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not found3(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not found418976807#0#135#0(6@0"418976807#0#0#0#0#0"0(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not found418976807#135#135#0(6@0"418976807#0#0#0#0#0"0(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not found418976807#270#135#0(6@0"418976807#0#0#0#0#0"0(0#0#0"4319178752#1602"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/g++-4.2 -arch i386 -bundle -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -filelist /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~.LinkFileList -mmacosx-version-min=10.6 @/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/c74_linker_flags.txt -lpcap -framework MaxAudioAPI -framework MaxAPI -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/i386/ray.sniff~0#
+
+CLd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~ normal ppc
+s418976811.449640
+e418976811.493590
+r0
+xLd
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~
+xnormal
+xppc
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not found
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not found
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not found
+old: warning: in /Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/msp-includes/MaxAudioAPI.framework/MaxAudioAPI, missing required architecture ppc in file
+old: warning: in /Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/MaxAPI.framework/MaxAPI, missing required architecture ppc in file
+oUndefined symbols:
+o  "_z_dsp_setup", referenced from:
+o      raysniff::NewObj(symbol*, long, atom*)in raysniff.o
+o  "_dsp_add", referenced from:
+o      raysniff::ObjInSig(raysniff::OBJECT*, _signal**, short*)in raysniff.o
+o  "_class_dspinit", referenced from:
+o      raysniff::InitObj()     in raysniff.o
+o  "_z_dsp_free", referenced from:
+o      raysniff::DelObj(raysniff::OBJECT*)in raysniff.o
+old: symbol(s) not found
+ocollect2: ld returned 1 exit status
+lSLF07#2@147"Link /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~418976811#418976811#0(1148"ld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not foundld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not foundld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not foundld: warning: in /Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/msp-includes/MaxAudioAPI.framework/MaxAudioAPI, missing required architecture ppc in fileld: warning: in /Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/MaxAPI.framework/MaxAPI, missing required architecture ppc in fileUndefined symbols:  "_z_dsp_setup", referenced from:      raysniff::NewObj(symbol*, long, atom*)in raysniff.o  "_dsp_add", referenced from:      raysniff::ObjInSig(raysniff::OBJECT*, _signal**, short*)in raysniff.o  "_class_dspinit", referenced from:      raysniff::InitObj()     in raysniff.o  "_z_dsp_free", referenced from:      raysniff::DelObj(raysniff::OBJECT*)in raysniff.old: symbol(s) not foundcollect2: ld returned 1 exit status15(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not found418976811#0#135#0(6@0"418976811#0#0#0#0#0"0(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not found418976811#135#135#0(6@0"418976811#0#0#0#0#0"0(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not found418976811#270#135#0(6@0"418976811#0#0#0#0#0"0(22@138"In /Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/msp-includes/MaxAudioAPI.framework/MaxAudioAPI, missing required architecture ppc in file418976811#405#152#0(6@0"418976811#0#0#0#0#0"0(22@128"In /Users/leico/pro/Max6/MaxSDK-6.1.4/c74support/max-includes/MaxAPI.framework/MaxAPI, missing required architecture ppc in file418976811#557#142#0(6@0"418976811#0#0#0#0#0"0(4@32""_z_dsp_setup", referenced from:418976811#718#35#0(6@0"418976811#0#0#0#0#0"0(13@51"Raysniff::NewObj(symbol*, long, atom*)in raysniff.o418976811#753#58#0(6@0"418976811#0#0#0#0#0"0(4@28""_dsp_add", referenced from:418976811#811#31#0(6@0"418976811#0#0#0#0#0"0(13@69"Raysniff::ObjInSig(raysniff::OBJECT*, _signal**, short*)in raysniff.o418976811#842#76#0(6@0"418976811#0#0#0#0#0"0(4@34""_class_dspinit", referenced from:418976811#918#37#0(6@0"418976811#0#0#0#0#0"0(13@37"Raysniff::InitObj()     in raysniff.o418976811#955#44#0(6@0"418976811#0#0#0#0#0"0(4@31""_z_dsp_free", referenced from:418976811#999#34#0(6@0"418976811#0#0#0#0#0"0(13@48"Raysniff::DelObj(raysniff::OBJECT*)in raysniff.o418976811#1033#55#0(6@0"418976811#0#0#0#0#0"0(13@19"Symbol(s) not found418976811#1088#24#0(6@0"418976811#0#0#0#0#0"0(13@35"Collect2: ld returned 1 exit status418976811#1112#36#0(6@0"418976811#0#0#0#0#0"0(0#0#0"4319178752#1599"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/g++-4.2 -arch ppc -bundle -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -filelist /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~.LinkFileList -mmacosx-version-min=10.6 @/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/c74_linker_flags.txt -lpcap -framework MaxAudioAPI -framework MaxAPI -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/ppc/ray.sniff~1#
+
+CLd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/ray.sniff~ normal x86_64
+s418976804.713169
+e418976804.770108
+r1
+xLd
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/ray.sniff~
+xnormal
+xx86_64
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not found
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not found
+old: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not found
+lSLF07#2@150"Link /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/ray.sniff~418976804#418976804#0(405"ld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not foundld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not foundld: warning: directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not found3(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes' following -F not found418976804#0#135#0(6@0"418976804#0#0#0#0#0"0(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes' following -F not found418976804#135#135#0(6@0"418976804#0#0#0#0#0"0(22@121"Directory '/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes' following -F not found418976804#270#135#0(6@0"418976804#0#0#0#0#0"0(0#0#0"4319178752#1608"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/g++-4.2 -arch x86_64 -bundle -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/max-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../c74support/jit-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/msp-includes -F/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes -filelist /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/ray.sniff~.LinkFileList -mmacosx-version-min=10.6 @/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../../c74support/max-includes/c74_linker_flags.txt -lpcap -framework MaxAudioAPI -framework MaxAPI -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/ray.sniff~.build/Deployment/max-external.build/Objects-normal/x86_64/ray.sniff~0#
 
 CProcessInfoPlistFile /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/Info.plist /Users/leico/pro/Max/External/ray.sniff~/../Info.plist
-r0
+s352553146.763901
+e352553146.767752
+r1
+xProcessInfoPlistFile
+x/Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/Info.plist
+x/Users/leico/pro/Max/External/ray.sniff~/../Info.plist
+lSLF07#2@62"Process /Users/leico/pro/Max/External/ray.sniff~/../Info.plist352553146#352553146#0(0"0(0#0#54"/Users/leico/pro/Max/External/ray.sniff~/../Info.plist8633368704#368"    cd "/Users/leico/pro/Max/External/ray.sniff~"    builtin-infoPlistUtility /Users/leico/pro/Max/External/ray.sniff~/../Info.plist -genpkginfo /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo/Contents/Info.plist0#
+
+CProcessInfoPlistFile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Info.plist /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../Info.plist
+s418976800.650106
+e418976800.720127
+r1
+xProcessInfoPlistFile
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Info.plist
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../Info.plist
+lSLF07#2@84"Process /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../Info.plist418976800#418976800#0(0"0(0#0#76"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../Info.plist4319178752#465"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    builtin-infoPlistUtility /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../../Info.plist -genpkginfo /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Info.plist0#
+
+CProcessInfoPlistFile /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Info.plist /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../Info.plist
+s418976361.485067
+e418976361.520675
+r1
+xProcessInfoPlistFile
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Info.plist
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../Info.plist
+lSLF07#2@81"Process /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../Info.plist418976361#418976361#0(0"0(0#0#73"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../Info.plist17200514816#462"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    builtin-infoPlistUtility /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/../Info.plist -genpkginfo /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo/Contents/Info.plist0#
 
 CSymLink /Users/leico/pro/Max/External/ray.sniff~/build/Deployment/ray.sniff~.mxo /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo
 s341819557.956247
@@ -558,11 +1252,23 @@ x/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/ray.sniff~.mxo
 x/Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo
 lSLF07#2@82"/Users/leico/pro/Max/External/ray.sniff~/build/Deployment/ray.sniff~.mxo を処理341819557#341819557#0(0"0(0#0#0"27303562370285668#211"    cd "/Users/leico/pro/Max/External/ray.sniff~"    /bin/ln -sf /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo /Users/leico/pro/Max/External/ray.sniff~/build/Deployment/ray.sniff~.mxo0#
 
+CSymLink /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/ray.sniff~.mxo /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo
+s418976800.651317
+e418976800.720296
+r1
+xSymLink
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/ray.sniff~.mxo
+x/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo
+lSLF07#2@101"/Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/ray.sniff~.mxo を処理418976800#418976800#0(0"0(0#0#0"4319178752#276"    cd /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-    /bin/ln -sf /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/Deployment/ray.sniff~.mxo0#
+
 CTouch /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo
-s341819566.380102
-e341819566.410615
+s352553242.492776
+e352553242.529318
 r1
 xTouch
 x/Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo
-lSLF07#2@77"Touch /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo341819566#341819566#0(0"0(0#0#0"8604307744#144"    cd "/Users/leico/pro/Max/External/ray.sniff~"    /usr/bin/touch -c /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo0#
+lSLF07#2@77"Touch /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo352553242#352553242#0(0"0(0#0#0"8634400416#144"    cd "/Users/leico/pro/Max/External/ray.sniff~"    /usr/bin/touch -c /Users/leico/pro/Max/External/ray.sniff~/../../sdk-build/ray.sniff~.mxo0#
+
+CTouch /Users/leico/pro/Max6/MaxSDK-6.1.4/PROJECT/audio/ray.sniff-/build/UninstalledProducts/ray.sniff~.mxo
+r0
 
