@@ -8,18 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		4A018D6E13CEBA6600F0F092 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A018D6D13CEBA6600F0F092 /* main.cpp */; };
-		4AE68C0F145A19570034BF44 /* libpcap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE68C0E145A19570034BF44 /* libpcap.dylib */; };
-		9C96EBAE194BA97C00BD91E8 /* MaxAudioAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C96EBAD194BA97C00BD91E8 /* MaxAudioAPI.framework */; };
-		9CBEED4F1893D267008DBBEB /* MaxAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBEED4E1893D267008DBBEB /* MaxAPI.framework */; };
+		5643DEB01DFA83BD00ABCE27 /* libpcap.A.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5643DEAF1DFA83BD00ABCE27 /* libpcap.A.tbd */; };
+		568FC0011DFA868E00E42418 /* MaxAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 568FC0001DFA868E00E42418 /* MaxAPI.framework */; };
+		568FC0031DFA869300E42418 /* MaxAudioAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 568FC0021DFA869300E42418 /* MaxAudioAPI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4A018D6D13CEBA6600F0F092 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4AAD6F8D13CE8ABD0036FB6D /* ray.sniff~.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ray.sniff~.mxo"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4AE68C0E145A19570034BF44 /* libpcap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpcap.dylib; path = usr/lib/libpcap.dylib; sourceTree = SDKROOT; };
+		5643DEAF1DFA83BD00ABCE27 /* libpcap.A.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpcap.A.tbd; path = usr/lib/libpcap.A.tbd; sourceTree = SDKROOT; };
+		568FC0001DFA868E00E42418 /* MaxAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAPI.framework; path = "../../c74support/max-includes/MaxAPI.framework"; sourceTree = "<group>"; };
+		568FC0021DFA869300E42418 /* MaxAudioAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAudioAPI.framework; path = "../../c74support/msp-includes/MaxAudioAPI.framework"; sourceTree = "<group>"; };
 		9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../../maxmspsdk.xcconfig; sourceTree = "<group>"; };
-		9C96EBAD194BA97C00BD91E8 /* MaxAudioAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAudioAPI.framework; path = "../../../c74support/msp-includes/MaxAudioAPI.framework"; sourceTree = "<group>"; };
-		9CBEED4E1893D267008DBBEB /* MaxAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAPI.framework; path = "../../../c74support/max-includes/MaxAPI.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,9 +27,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C96EBAE194BA97C00BD91E8 /* MaxAudioAPI.framework in Frameworks */,
-				4AE68C0F145A19570034BF44 /* libpcap.dylib in Frameworks */,
-				9CBEED4F1893D267008DBBEB /* MaxAPI.framework in Frameworks */,
+				5643DEB01DFA83BD00ABCE27 /* libpcap.A.tbd in Frameworks */,
+				568FC0011DFA868E00E42418 /* MaxAPI.framework in Frameworks */,
+				568FC0031DFA869300E42418 /* MaxAudioAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,9 +50,9 @@
 		089C1671FE841209C02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9C96EBAD194BA97C00BD91E8 /* MaxAudioAPI.framework */,
-				9CBEED4E1893D267008DBBEB /* MaxAPI.framework */,
-				4AE68C0E145A19570034BF44 /* libpcap.dylib */,
+				568FC0021DFA869300E42418 /* MaxAudioAPI.framework */,
+				568FC0001DFA868E00E42418 /* MaxAPI.framework */,
+				5643DEAF1DFA83BD00ABCE27 /* libpcap.A.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -111,7 +111,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0810;
 			};
 			buildConfigurationList = 2FBBEACF08F335010078DB84 /* Build configuration list for PBXProject "ray.sniff~" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -167,9 +167,38 @@
 			baseConfigurationReference = 9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(C74SUPPORT)/max-includes",
+					"$(C74SUPPORT)/msp-includes",
+					"$(C74SUPPORT)/jit-includes",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(C74SUPPORT)/max-includes",
+					"$(C74SUPPORT)/msp-includes",
+					"$(C74SUPPORT)/jit-includes",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.11;
 			};
 			name = Development;
 		};
@@ -178,9 +207,36 @@
 			baseConfigurationReference = 9C04292E1893CFDA00D703F6 /* maxmspsdk.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(C74SUPPORT)/max-includes",
+					"$(C74SUPPORT)/msp-includes",
+					"$(C74SUPPORT)/jit-includes",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(C74SUPPORT)/max-includes",
+					"$(C74SUPPORT)/msp-includes",
+					"$(C74SUPPORT)/jit-includes",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.11;
 			};
 			name = Deployment;
 		};
@@ -189,16 +245,13 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../c74support/max-includes\"",
-					"\"$(SRCROOT)/../../../c74support/msp-includes\"",
-					"\"$(SRCROOT)/../../../c74support/jit-includes\"",
-					"/Users/LIFE_MAC06/pro/Max6/MaxSDK-6.1.4/c74support/msp-includes",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cycling74.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "ray.sniff~";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.11;
 			};
 			name = Development;
 		};
@@ -207,15 +260,12 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../c74support/max-includes\"",
-					"\"$(SRCROOT)/../../../c74support/msp-includes\"",
-					"\"$(SRCROOT)/../../../c74support/jit-includes\"",
-					"/Users/LIFE_MAC06/pro/Max6/MaxSDK-6.1.4/c74support/msp-includes",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cycling74.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "ray.sniff~";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.11;
 			};
 			name = Deployment;
 		};
