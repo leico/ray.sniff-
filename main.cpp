@@ -6,10 +6,12 @@
 #include <list>
 #include <vector>
 
+extern "C" {
 #include "ext.h"
 #include "ext_obex.h"
 #include "ext_systhread.h"
 #include "z_dsp.h"
+}
 
 typedef union {
   unsigned int num;
@@ -37,8 +39,8 @@ typedef struct _raysniff{
   
 } t_raysniff;
 
-void   raysniff_dsp      (t_raysniff *x, t_signal **sp, short *count);
-t_int* raysniff_perform  (t_int *w);
+//void   raysniff_dsp      (t_raysniff *x, t_signal **sp, short *count); //deprecated
+//t_int* raysniff_perform  (t_int *w);                                   //deprecated
 void   raysniff_dsp64    (t_raysniff *x, t_object *dsp64, short *count, double samplerate, long maxvectorsize, long flags);
 void   raysniff_perform64(t_raysniff *x, t_object *dsp64, double **ins, long numins, double **outs, long numouts, long sampleframes, long flags, void *userparam);
 
@@ -51,9 +53,9 @@ void  raysniff_assist   (t_raysniff *x, void *b, long m, long a, char *s);
 void  raysniff_free     (t_raysniff *x);
 void* raysniff_new      (t_symbol *s, int argc, t_atom *argv); 
 
-t_class *raysniff;
+static t_class *raysniff = NULL;
 
-extern "C" C74_EXPORT int main(void){
+void ext_main(void *r){
   
   t_class *c;
 
@@ -61,7 +63,7 @@ extern "C" C74_EXPORT int main(void){
  
   class_addmethod(c, (method)raysniff_int,       "int",       A_DEFLONG, 0);
   class_addmethod(c, (method)raysniff_size,      "size",      A_NOTHING, 0);
-  class_addmethod(c, (method)raysniff_dsp,       "dsp",       A_CANT,    0);
+//  class_addmethod(c, (method)raysniff_dsp,       "dsp",       A_CANT,    0); //deprecated
   class_addmethod(c, (method)raysniff_dsp64,     "dsp64",     A_CANT,    0);
   class_addmethod(c, (method)raysniff_assist,    "assist",    A_CANT,    0);
 
@@ -69,7 +71,7 @@ extern "C" C74_EXPORT int main(void){
   class_register(CLASS_BOX, c);
 
   raysniff = c;
-	return 0;
+	return;
 }
 
 
@@ -147,22 +149,23 @@ void raysniff_getoutput64(t_raysniff *x, double **outs, long sampleframes){
 
 
 /* ==================================================== *
- * raysniff_dsp                                         *
+ * raysniff_dsp     DEPRECATED                          *
  * ==================================================== */
+/*
 void raysniff_dsp(t_raysniff *x, t_signal **sp, short *count){
 
   dsp_add(raysniff_perform, 3, x, sp[0] -> s_vec, sp[0] -> s_n);
 }
-
+*/
 
 /* ==================================================== *
- * raysniff_perform                                     *
+ * raysniff_perform   DEPRECATED                        *
  * ==================================================== */
-
+/*
 float raysniff_getsample32(t_raysniff *x);
 void  raysniff_getoutput32(t_raysniff *x, t_float **outs, int sampleframes);
-
-
+*/
+/*
 t_int* raysniff_perform(t_int *w){
   t_raysniff *x    = (t_raysniff *)(w[1]);
   t_float    *out1 = (t_float    *)(w[2]);
@@ -172,10 +175,11 @@ t_int* raysniff_perform(t_int *w){
 
   return w + 4;
 }
-
+*/
 /* ==================================================== *
- * raysniff_getsample32                                 *
+ * raysniff_getsample32  DEPRECATED                     *
  * ==================================================== */
+/*
 t_float raysniff_getsample32(t_raysniff *x){
 
   if( systhread_mutex_trylock(x -> _mutex) == 0){
@@ -208,10 +212,11 @@ t_float raysniff_getsample32(t_raysniff *x){
   return 0;
 
 }
-
+*/
 /* ==================================================== *
- * raysniff_getoutput32                                 *
+ * raysniff_getoutput32   DEPRECATED                    *
  * ==================================================== */
+/*
 void raysniff_getoutput32(t_raysniff *x, t_float **outs, int sampleframes){
 
   t_float *out1 = outs[0];
@@ -220,7 +225,7 @@ void raysniff_getoutput32(t_raysniff *x, t_float **outs, int sampleframes){
   while(n --)
     *out1 ++ = raysniff_getsample32(x);
 }
-
+*/
 
 /* ==================================================== *
  * raysniff_int                                         *
@@ -278,16 +283,11 @@ void* raysniff_thread(t_raysniff *x){
   struct pcap_pkthdr  header;
   const  u_char      *packet;
 
-  bool lock = false;
-
   while(1){
 
     if(x -> _systhread_cancel) break;
 
-    if(x -> _datapool -> size() < 5){
-      while(systhread_mutex_trylock(x -> _mutex) == 0);
-      lock = true;
-    }
+    while(systhread_mutex_trylock(x -> _mutex) != 0);
 
     packet = pcap_next(x -> _pcap_handle, &header);
     if(packet != NULL){
@@ -299,12 +299,10 @@ void* raysniff_thread(t_raysniff *x){
       x -> _datapool -> push_back( std :: vector<u_char>(pos, pos + header.caplen) );
     }
 		
-    if(lock){
-			systhread_mutex_unlock(x -> _mutex);
-			lock = false;
-		}
+		systhread_mutex_unlock(x -> _mutex);
 
-    systhread_sleep(1);
+    //systhread_sleep(1);
+    usleep( 1000 );
   }
 
   x -> _systhread_cancel = false;
@@ -324,7 +322,7 @@ void* raysniff_thread(t_raysniff *x){
  * ==================================================== */
 void raysniff_qfx(t_raysniff *x){
 
-  while( systhread_mutex_trylock(x -> _mutex) == 0);
+  while( systhread_mutex_trylock(x -> _mutex) != 0);
   int size = x -> _datapool -> size();
   systhread_mutex_unlock(x -> _mutex);
 
@@ -516,15 +514,58 @@ t_max_err raysniff_pcapinit(long argc, t_atom *argv, pcap_t **handle) {
   }
   post("ip = %ld, netmask = %ld", ip, netmask);
 
-  //get Device Handle
-  *handle = pcap_open_live(dev, 4096, 1, 1, errbuf);
+  /******** Packet Capture Device settings *******/
+    //get Device Handle
+  *handle = pcap_create( dev, errbuf );
   if (*handle == NULL) {
-    post("Device Can't Open");
-    post("%s", errbuf);
+    error("Can't get device handle");
+    error("%s", errbuf);
     return MAX_ERR_GENERIC;
   }
-  post("Success get Device Handle");
 
+    //set snap length : max length of a captured packet
+  int status = 0;
+  status = pcap_set_snaplen( *handle, 65535);
+  if( status != 0 ) { 
+    error( "set_snaplen status != 0" );
+    error( "%s", errbuf);
+    return MAX_ERR_GENERIC;
+  }
+
+    // set buffer timeout : if set 0, infinity waiting
+  status = pcap_set_timeout( *handle, 1 );
+  if( status != 0 ) {
+    error( "set_timeout status != 0" );
+    error( "%s", errbuf);
+    return MAX_ERR_GENERIC;
+  }
+
+    // set promiscuous mode : disable -> only capture related packets
+  status = pcap_set_promisc( *handle, 1 );
+  if( status != 0 ) { 
+    error( "set_promisc != 0" );
+    error( "%s", errbuf );
+    return MAX_ERR_GENERIC;
+  }
+
+    // set buffer size : prepare enough data buffer size for multi media contents
+  status = pcap_set_buffer_size( *handle, 1024 * 1024 * 500 ); // 500 MB
+  if( status != 0 ) { 
+    error( "set_buffer_size != 0" );
+    error( "%s", errbuf );
+    return MAX_ERR_GENERIC;
+  }
+
+  status = pcap_activate( *handle );
+  if( status != 0 ) { 
+    error( "pcap_activate != 0" );
+    error( "%s", errbuf );
+    return MAX_ERR_GENERIC;
+  }
+
+  //*handle = pcap_open_live(dev, 4096, 1, 1, errbuf);
+  //post("Success get Device Handle");
+  
   //packet filter
   //makefilter
   using namespace std;
