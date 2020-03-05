@@ -301,8 +301,8 @@ void* raysniff_thread(t_raysniff *x){
 		
 		systhread_mutex_unlock(x -> _mutex);
 
-    //systhread_sleep(1);
-    usleep( 1000 );
+    systhread_sleep(1);
+    //usleep( 1000 );
   }
 
   x -> _systhread_cancel = false;
@@ -559,6 +559,7 @@ t_max_err raysniff_pcapinit(long argc, t_atom *argv, pcap_t **handle) {
   status = pcap_activate( *handle );
   if( status != 0 ) { 
     error( "pcap_activate != 0" );
+    error( "status = %d", status);
     error( "%s", errbuf );
     return MAX_ERR_GENERIC;
   }
