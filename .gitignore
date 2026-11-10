@@ -19,6 +19,8 @@ xcuserdata/
 
 # Vim backup / swap
 # NOTE: Do not use "*~" here; it also matches "ray.sniff~" (the object's own name).
+# Many global gitignores contain "*~", so explicitly re-include the object's name.
+!ray.sniff~
 *.swp
 *.swo
 *.un~

@@ -1,0 +1,17 @@
+{
+	"author" : "leico",
+	"authors" : [ "leico" ],
+	"description" : "Convert network packets into an audio signal using libpcap",
+	"displayname" : "ray.sniff~",
+	"max_version_min" : "8.2.0",
+	"name" : "ray.sniff",
+	"os" : {
+		"macintosh" : {
+			"platform" : [ "x64", "arm64" ],
+			"min_version" : "11.0.x"
+		}
+	},
+	"tags" : [ "network", "pcap", "sonification" ],
+	"version" : "0.2.0",
+	"website" : "https://github.com/leico/ray.sniff-"
+}
