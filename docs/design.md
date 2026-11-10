@@ -37,7 +37,7 @@ ray.sniff~ を現代化（Universal Binary 化と再設計）するときの仕�
 ## 2. ビルドとリポジトリ構成（**決定**・実装済み）
 
 - CMake と `max-sdk-base`（git submodule。新しい `cmake/` モジュール方式）を使う
-- `CMAKE_OSX_ARCHITECTURES = arm64;x86_64`。最小 OS は事実上 macOS 11（arm64 の制約による）
+- `CMAKE_OSX_ARCHITECTURES = arm64;x86_64`。**最小 OS は macOS 11.0 に明示的に設定する**（arm64 は 11 以上が必須。また max-sdk-base の既定値 10.11 では、lock-free キューの `alignas(128)` に必要な C++17 のアラインメント付き `new` が使えない）
 - 出力先は `externals/ray.sniff~.mxo`。ad-hoc 署名する（max-sdk-base の既定動作）
 - `AUTHOR_DOMAIN = com.leico`、バージョンは 0.2.0（仮の値）
 - リポジトリ自体を Max パッケージの構成にする（`externals/`、`help/`、`source/`、`package-info.json`）
@@ -90,13 +90,12 @@ NIC → ①カーネル BPF → ②libpcap の読み出しバッファ → キ�
   - **決定**：`mlock` に失敗したときは、**コンソールに警告を出して、固定せずに動作を続ける**（「固定できなかったので、メモリ逼迫時に音が途切れる可能性がある」）。固定できているかは stats の `queue locked` で確認できる
     - 理由：失敗するのは主に、メモリの少ない Mac がメモリ逼迫しているときに大きなキューを固定しようとした場合。大きなキューを使う場面で一番困るのは「パッチが動かないこと」なので、止めずに動かして状況が分かるようにする
     - 確認した事実：`RLIMIT_MEMLOCK` はシェルからでも Finder（launchd）からでも unlimited。`vm.global_user_wire_limit` は実メモリ 32 GB に対して約 27 GB
-- **位置の管理（決定）**：`std::atomic<uint64_t>` を 2 つ使う（`static_assert(is_always_lock_free)`）。**`alignas(128)` で別々のキャッシュラインに置く**（false sharing を避けるため。Apple Silicon のキャッシュラインは 128 バイト）
+- **位置の管理（決定）**：`std::atomic<uint64_t>` を 2 つ使う（`static_assert(is_always_lock_free)`）。**`alignas(128)` で別々のキャッシュラインに置く**（false sharing を避けるため。128 の理由は [atomic.md](atomic.md) §5）
   - `produced_`：書き手がキューに入れたバイト数の累計。書き込むのは書き手だけ
   - `consumed_`：キューから取り除かれたバイト数の累計（読んだ分と、`clear` で捨てた分の両方を含む）。書き込むのは読み手だけ
   - **`% capacity_` で正規化せず、増やし続ける。** 添字にするときだけ `value & index_mask_`（`index_mask_ = capacity_ - 1`）を使う
     - 理由：未読のバイト数が常に `produced_ - consumed_` で求まり、0 なら空、`capacity_` なら満杯と区別できる（正規化すると、空と満杯がどちらも「位置が同じ」になり、1 バイト空けておくか変数を追加する必要がある）。64bit なので、毎秒 1 GB でも 0 に戻るまで約 580 年かかる。仮に 0 に戻っても、符号なし整数の引き算なので結果は正しい
-  - 書き手：データを書いた後に `produced_.store(release)`。空きを確認するときは `consumed_.load(acquire)`
-  - 読み手：`produced_.load(acquire)` → 読む → `consumed_.store(release)`
+  - 読み書きの順序と memory order は、下の「各スレッドの処理の順序」の図と、[atomic.md](atomic.md) §6 の一覧を参照
 - **stats のカウンタとは分ける（決定）**：`produced_` / `consumed_` はリングバッファのクラスの内部に閉じ込める。stats のカウンタ（`written_packets_` / `written_bytes_` / `dropped_packets_` / `dropped_bytes_`）は別のクラス（例：`QueueStats`）に持たせる
   - 理由：`produced_` / `consumed_` は `resetstats` で 0 に戻してはいけない（未読のバイト数の計算が壊れる）。一方、`@queuesize` を変えるとリングバッファごと作り直されて 0 から始まる。stats は `resetstats` で 0 に戻し、`@queuesize` を変えても累計を続ける。値の意味も、リセットされる条件も違う
 - オーディオスレッドは、リングバッファから 1 バイトずつ直接読んでサンプルを組み立てる。**作業用のバッファ（scratch）は使わない**
@@ -105,7 +104,111 @@ NIC → ①カーネル BPF → ②libpcap の読み出しバッファ → キ�
   - 理由：リアルタイム性を優先するか、溜めて聞かせるかは表現上の判断なので、仕組み（キュー）と方針（パッチ）を分ける
 - **`clear` の実装**：メインスレッドは `std::atomic<bool> clear_requested_` を立てるだけにする。オーディオスレッドが各ブロックの先頭でそれを確認し、`consumed_ = produced_` にする
   - `consumed_` を書き込むのは読み手だけ、という SPSC の原則を守るため
+  - フラグは `exchange(false)` で読むと同時に降ろす（`load` と `store` に分けてはいけない理由は [atomic.md](atomic.md) §3）
+  - **`exchange` は `produced_` を読む前に行う。** 逆にすると、`produced_` を読んでから `exchange` までの間に書かれたデータが `clear` の後も残る
   - DSP が止まっている間に送られた `clear` は、DSP を再開した最初のブロックで反映される
+
+#### なぜロックなしで安全なのか：持ち主の境界
+
+`std::atomic`、memory order、`alignas` などの基礎は [atomic.md](atomic.md) にまとめている。
+
+`produced_` と `consumed_` は、バッファのどのバイトをどのスレッドが触ってよいかの**境界**を表す。データの各バイトは、同時に読み書きされても安全になったのではなく、**そもそも 2 つのスレッドから同時に触られない**。
+
+下の図は、横軸の全体がリングバッファ（`capacity_ = 16` の配列）を表す。`produced_` と `consumed_` の位置は、配列の添字（累計 `& index_mask_`）で示す。
+
+例 1：`consumed_ = 21`、`produced_ = 30`（添字は 5 と 14）。空きが末尾から先頭に回り込む
+
+```mermaid
+gantt
+    title capacity_ = 16（consumed_ = 21, produced_ = 30）
+    dateFormat x
+    axisFormat %L
+    todayMarker off
+
+    section consumed
+    position = 5 : milestone, 5, 5
+
+    section byte_ring
+    未読 9 バイト : active, 5, 14
+    空き : 14, 16
+    空き（先頭に回り込む） : 0, 5
+
+    section produced
+    position = 14 : milestone, 14, 14
+```
+
+例 2：`consumed_ = 26`、`produced_ = 35`（添字は 10 と 3）。未読が末尾から先頭に回り込む
+
+```mermaid
+gantt
+    title capacity_ = 16（consumed_ = 26, produced_ = 35）
+    dateFormat x
+    axisFormat %L
+    todayMarker off
+
+    section consumed
+    position = 10 : milestone, 10, 10
+
+    section byte_ring
+    未読 : active, 10, 16
+    未読（先頭に回り込む） : active, 0, 3
+    空き 7 バイト : 3, 10
+
+    section produced
+    position = 3 : milestone, 3, 3
+```
+
+- 未読 `[consumed_, produced_)` は**読み手だけ**が触る。書き手はこの範囲には書かない
+- 空き `[produced_, consumed_ + capacity_)` は**書き手だけ**が触る。読み手はこの範囲を読まない
+- 未読と空きを合わせると、常にちょうど `capacity_` バイトになる
+- 書き手が `memcpy` して `produced_` を進めると、書き終えた範囲が未読に移る。読み手が `consumed_` を進めると（`commit_read` と `clear`）、その範囲が空きに戻る。**境界を動かすことは、バイトの持ち主を相手に渡すこと**を意味する
+- **添字が重なるとき**：`consumed_` と `produced_` の添字が同じになるのは、空のとき（未読 0 バイト）と満杯のとき（空き 0 バイト）の 2 通りある。添字だけ、つまり上のような図だけでは区別できない。累計の差 `produced_ - consumed_` が 0 なら空、`capacity_` なら満杯と区別する。累計を `% capacity_` で正規化しないのはこのため（上の「位置の管理」を参照）
+
+この仕組みは、次の 3 つがそろって初めて成り立つ。
+
+| 条件 | 欠けるとどうなるか |
+|---|---|
+| 境界（`produced_` / `consumed_`）が atomic | 境界の値を読んだときに、書きかけの値を見るおそれがある |
+| acquire / release で読み書きする | `relaxed` だと、新しい `produced_` が見えても `memcpy` の中身がまだ見えないことがある（[atomic.md](atomic.md) §4） |
+| 境界ごとに書き手が 1 つ（SPSC） | 書き手が 2 つあると、両方が同じ空き領域を自分のものだと思って書き込んでしまう。atomic でも防げない。`clear` を `consumed_` に直接書かず、要求のフラグにしたのはこのため |
+
+#### 各スレッドの処理の順序
+
+`try_write` / `begin_read` / `commit_read` / `request_clear` の中で、atomic な変数をどの順に読み書きするかを示す。点線の矢印は release と acquire の組（[atomic.md](atomic.md) §4）による受け渡しを表す。
+
+```mermaid
+sequenceDiagram
+    participant C as キャプチャスレッド<br/>try_write
+    participant R as ByteRing<br/>produced_ / consumed_ /<br/>clear_requested_ / buffer_
+    participant A as オーディオスレッド<br/>begin_read / commit_read
+    participant M as メインスレッド<br/>request_clear
+
+    Note over C: パケットを受け取る
+    C->>R: produced_.load(relaxed)<br/>（自分しか書かない）
+    C->>R: consumed_.load(acquire)
+    alt 空きが足りない
+        Note over C: パケットごと捨てる（stats の dropped を増やす）
+    else 空きがある
+        C->>R: buffer_ に memcpy（atomic ではない書き込み）
+        C->>R: produced_.store(release)
+        R-->>A: ここまでの memcpy が見えるようになる
+    end
+
+    M->>R: clear_requested_.store(true, release)
+
+    Note over A: perform64 の各ブロックの先頭
+    A->>R: ① clear_requested_.exchange(false, acquire)
+    A->>R: ② produced_.load(acquire)
+    A->>R: ③ consumed_.load(relaxed)<br/>（自分しか書かない）
+    opt ① が true だった
+        A->>R: consumed_.store(produced, release)<br/>（未読をすべて捨てる）
+    end
+    Note over A: ReadView で buffer_ を 1 バイトずつ読み、サンプルを作る
+    A->>R: commit_read：consumed_.store(start + n, release)
+    R-->>C: 読み終わった範囲を上書きしてよくなる
+```
+
+- ① を ② より前に置く理由は、上の「`clear` の実装」を参照
 
 ---
 
@@ -232,5 +335,15 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 
 ## 10. 実装の現状
 
-作業ブランチは `feature/universal`。コミット済みなのは「ファイル整理」と「CMake 化」まで。
-作業ツリーにある**未コミットのソース整理**（`packet_capture.{h,cpp}` と `ray.sniff~.cpp`）は、この設計の**前の段階**のもの。mutex と deque、古いものから自動で捨てる処理、作るときに pcap を開く処理、500 MB の指定が残っている。この設計書に沿って書き直す予定。
+作業ブランチは `feature/universal`。
+
+| 手順 | 内容 | 状態 |
+|---|---|---|
+| 1 | 設計書のコミット | 完了 |
+| 2 | テストの土台（Catch2、`RAYSNIFF_BUILD_TESTS`、`RAYSNIFF_SANITIZER`） | 完了 |
+| 3 | キュー（`source/core/`：`locked_memory`、`byte_ring`、`packet_queue`） | 完了。通常・TSan・ASan でテストが通る |
+| 4 | キャプチャ部分（デバイスとファイルの両方から開ける、8 MB、stats、テストは `.pcap`） | 未着手 |
+| 5 | Max オブジェクト（状態機械、attribute、ポーリング、dumpout） | 未着手 |
+| 6 | README の更新、Max 上での確認 | 未着手 |
+
+`source/ray.sniff~/packet_capture.{h,cpp}` と `ray.sniff~.cpp` は、この設計の**前の段階**のコード（mutex と deque、古いものから自動で捨てる処理、作るときに pcap を開く処理、500 MB の指定）。手順 4・5 で置き換える。それまでは external に `raysniff_core` をリンクしない（`PacketQueue` という同じ名前のクラスがぶつかるため）。
