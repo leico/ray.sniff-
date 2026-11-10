@@ -78,6 +78,11 @@ NIC → ①カーネル BPF → ②libpcap の読み出しバッファ → キ�
   - 8 MB の場合、1 インスタンスあたり約 24 MB を使う（元の設定では約 96 MB）
   - 何も指定しないときの libpcap の既定値は 512 KB
 - その他の設定：snaplen 65535、timeout 1 ms、promiscuous モード ON
+- **snaplen 65535 の理由**：パケットを切らずに丸ごと取るため。IPv4 の全長の欄は 16 bit なので、IP パケットの最大は 65535 バイト
+  - 通常の Ethernet は最大 1514 バイト、ジャンボフレームは約 9000 バイト、`lo0` の MTU は 16384
+  - いちばん大きくなるのは**自分が送信する TCP のパケット**。macOS は TSO（TCP Segmentation Offload）で分割を NIC に任せ、BPF は分割の前に見るので、MTU を超えて最大 64 KB 近くのまま取り込まれる。snaplen を MTU に合わせると、これが途中で切られる
+  - 今の libpcap / tcpdump の既定値は 262144 だが、65535 を超えるパケット（IPv6 のジャンボグラムなど）は Mac では通常見ないので、65535 で足りる
+  - キューの最小サイズ `kQueueSizeMinKb`（128 KB）は、この最大の 1 パケットが必ず入るように決めている（キューより大きいパケットは、いつまでも書き込めず毎回捨てられるため）
 
 ### ③：自前のキュー（**決定**：lock-free SPSC）
 - バイト単位のリングバッファ。容量は 2 のべき乗で、作るときに 1 回だけ確保する
@@ -219,6 +224,32 @@ sequenceDiagram
 - 上流の最新版（1.10.7 / 1.11.0）で直った脆弱性は、主に rpcap、savefile、`bpf_filter()` に関するもの。ray.sniff~ は使っていないので、影響は小さいと判断した
 - `pcap_lookupdev`（非推奨）は使わない。`pcap_findalldevs` で、IPv4 アドレスを持っていて接続中のインターフェースを優先して選ぶ（`pcap_lookupdev` は `utun0` などの VPN を選んでしまうため）
 
+### キャプチャ部分の構成（**決定**）
+
+`source/core/` に置き、Max に依存させない。
+
+| ファイル | クラス・関数 | 役割 |
+|---|---|---|
+| `pcap_device` | `choose_default_device(const pcap_if_t*)` | 既定のデバイスを選ぶ。採点：IPv4 アドレスあり +8、接続中 +4、running +2、up +1。loopback は除く。一覧を引数で受け取る純粋な関数にして、偽の一覧でテストする |
+| `pcap_source` | `PcapSource` | pcap ハンドルの RAII。`open_live(device)` と `open_offline(path)`。設定は snaplen 65535、timeout 1 ms、promiscuous ON、カーネルのバッファ 8 MB。`set_filter(expr)` は失敗しても元のフィルタのまま。開けなかったときは理由の種類（権限がない、など）とメッセージを返す |
+| `drop_counter` | `PcapDropCounter` | `ps_drop` の 32 bit の桁あふれと、開き直しによるリセットを吸収し、オブジェクトを作ってからの 64 bit の累計にする。`resetstats` 用に基準値を持ち、`snapshot()` は基準値からの差を返す |
+| `capture_thread` | `CaptureThread` | キャプチャスレッド。`pcap_next_ex` → `PacketQueue::push`。100 ms ごとに `pcap_stats` を呼んで `PcapDropCounter` に渡す。止めるときは停止要求のフラグと読み出しのタイムアウト（`pcap_breakloop` は使わない。下を参照） |
+| `capture_session` | `CaptureSession` | メインスレッドから使う窓口。開く・閉じる・`@device` の変更（新しいデバイスを開けてから差し替える）・`@filter` の変更（止める → `set_filter` → 再開）。キューは Max オブジェクトが持ち、参照で受け取る（デバイスを変えてもキューの中身を残すため） |
+
+- **ファイルの終わり**：`pcap_next_ex` は、ファイルの終わりで `PCAP_ERROR_BREAK`（-2）を返す。デバイスのときの `pcap_breakloop` と同じ値なので、ファイルから読んでいるときは「終了」として止まる（前の段階のコードは、ここで無限ループになっていた）
+- **ファイルでは `pcap_stats` が使えない**（savefile ではエラーになる）。取りこぼしの累計は `PcapDropCounter` の単体テストで確かめる
+- **パケットの読み出しは `pcap_next_ex`（決定）**：コールバック方式（`pcap_loop` / `pcap_dispatch`）は使わない
+  - `pcap_loop` は読み出しのタイムアウトでは戻らないので、止めるには `pcap_breakloop` が要る（下の「スレッドの止め方」と合わない）
+  - `pcap_dispatch` はタイムアウトで戻るが、停止要求を確かめられるのはバッファ 1 杯分を処理した後になる。`pcap_next_ex` ならパケット 1 つごとに確かめられる
+  - 読む・結果で分かれる・キューに入れる・ときどき stats を取る、が 1 つのループに並ぶ。コールバックでは `static` の中継関数と `u_char* user` 経由の `this` が要り、処理が分かれる
+  - 速さはほぼ同じ：`pcap_next_ex` も BPF から読んだバッファを 1 パケットずつ切り出すだけで、システムコールはバッファが空のときだけ。差は 1 パケットあたり関数呼び出し 1 回程度
+- **スレッドの止め方（決定）**：`pcap_breakloop` は使わない。atomic な停止要求のフラグと、読み出しのタイムアウト（1 ms）で止める
+  - 理由：`pcap_breakloop` を使うと、止めたときにフラグが残り、次に読んだときに `PCAP_ERROR_BREAK` が返ることがある。ファイルではこの値が「ファイルの終わり」と同じなので、区別できなくなる。使わなければ、`PCAP_ERROR_BREAK` は常に「ファイルの終わり」を意味する
+  - 前提：macOS の BPF では、パケットが 1 つも届かなくても、タイムアウトで読み出しが戻る（XNU の `bpfread` はタイムアウト付きで待つ）。**実機で確認済み（2026-11-11）**：`[live]` のテスト「close returns quickly even when no packet arrives」を root で動かし、パケットが来ない `lo0` でも `close()` が 100 ms 以内に戻ることを 5 回続けて確かめた（8 章）
+- **pcap の取りこぼしの累計（決定）**：キャプチャスレッドは、読み始めるときに `pcap_stats` の現在の値を基準にする（`PcapDropCounter::rebase`）。新しいハンドルや `pcap_setfilter` でカーネルのカウンタが 0 に戻るかどうかに関係なく、正しく累計できる。止まっている間（フィルタを変える数 ms）の取りこぼしは数えない
+- **pcap の取りこぼしの `resetstats`（決定）**：`QueueStats` と同じく、メインスレッドが基準値（`baseline_`）に現在の累計を記録し、出すときは累計との差にする（`PcapDropCounter::reset` / `snapshot`）。累計そのものを 0 に戻さないので、書き手はキャプチャスレッドだけのまま
+- **キャプチャスレッドで起きたエラーの伝え方（決定）**：キャプチャスレッドは、メッセージを文字列に書いてから、状態（動作中・終了・失敗）を atomic な変数に release で書き、止まる。メインスレッドは 100 ms ごとのポーリングで状態を acquire で読み、変わっていたらコンソールに出す。文字列は状態を書く前に 1 回だけ書くので、ロックは要らない。キャプチャスレッドから Max のコンソールへ直接は出力しない
+
 ---
 
 ## 6. キャプチャ権限（**決定**）
@@ -307,9 +338,9 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 
 実装上の注意
 - pcap ハンドルはスレッドセーフではない。`pcap_stats()` は**キャプチャスレッドが定期的に呼んで**、結果を atomic な変数に保存する。メインスレッドはそれを読むだけにする
-- `pcap_stats()` のカウンタは、pcap を開き直すとリセットされる（デバイスの変更や DSP の OFF→ON のとき）。閉じるときに累計に足し込んで、**オブジェクトを作ってからの累計**として出す
+- `pcap_stats()` のカウンタは、pcap を開き直すとリセットされる（デバイスの変更や DSP の OFF→ON のとき）。読み始めるときの値を基準にして差分を足し込み（`rebase`）、**オブジェクトを作ってからの累計**として出す
 - カーネルのカウンタは 32bit（`u_int`）なので、上限に達すると 0 に戻る。前回の値との差分を 64bit の累計に足し込む形にして、0 に戻ったときも正しく数える
-- キュー側のカウンタは 64bit の atomic（書き込むのはキャプチャスレッドだけ）。`resetstats` は、メインスレッドから基準値を記録して差分で出すか、リセット要求のフラグをキャプチャスレッドに渡す（`consumed_` と同じく、書き手を 1 つに保つため）
+- キュー側のカウンタは 64bit の atomic（書き込むのはキャプチャスレッドだけ）。`resetstats` は、メインスレッドで基準値を記録して差分で出す（`QueueStats` と `PcapDropCounter` の両方。書き手を 1 つに保つため）
 
 ### 7.6 信号への変換（**決定**：元の挙動を維持）
 - 1 サンプルごとに `bitdepth / 8` バイトを読み、リトルエンディアンで組み立てる（1 バイト目が最下位）
@@ -322,7 +353,10 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 
 - **フレームワーク（決定）：Catch2 v3**。`FetchContent` で取り込み、`catch_discover_tests` で CTest に登録する。トップの CMake では `option(RAYSNIFF_BUILD_TESTS)` が ON のときだけ `tests/` を追加する
 - **lock-free キューは ThreadSanitizer で確認する**（**決定**）。TSan と ASan は同時に使えないので、`RAYSNIFF_SANITIZER=thread / address` のようなビルドオプションで切り替える。書き手と読み手のスレッドを実際に同時に動かし、連番のデータが順番どおりに読めるかを大量に確認する
-- **pcap は保存済みのキャプチャファイル（`pcap_open_offline`）でテストする**（**決定**）。権限なしで、毎回同じ結果で確認できる。そのために `PacketCapture` を「デバイスからでもファイルからでも開ける」作りにする。テスト用の小さな `.pcap` を `tests/data/` に置く
+- **pcap は保存済みのキャプチャファイル（`pcap_open_offline`）でテストする**（**決定**）。権限なしで、毎回同じ結果で確認できる。そのために `PcapSource` を「デバイスからでもファイルからでも開ける」作りにする
+  - **テスト用の `.pcap` はテストの中で作る（決定）**。`pcap_open_dead` と `pcap_dump` で一時ファイルに書き出す。リポジトリにバイナリを置かずに済み、どんなパケットが入っているかもテストのコードで分かる
+- **実際のデバイスのテストは `[live]` タグで分ける（決定）**：`lo0` を開き、自分で 127.0.0.1 に送った UDP を捕まえる（[tests/test_live_capture.cpp](../tests/test_live_capture.cpp)）。`/dev/bpf*` を開けないときは SKIP する。`sudo ./build-test/tests/raysniff_tests "[live]"` で動かす
+  - 確かめること：デバイス → フィルタ → `pcap_next_ex` → キューの経路、パケットが来ないデバイスでも `close()` が 100 ms 以内に戻ること（「スレッドの止め方」の前提）、デバイスでは `pcap_stats` が取れること
 - **Max オブジェクト側**：ロジックはできるだけ Max に依存しない部分に寄せて Catch2 でテストする。Max 側は薄く保ち、ヘルプパッチで手作業で確認する
   - Max に依存しない部分に切り出すもの：キュー、キャプチャ、stats の集計、`@queuesize` の丸め処理、「DSP ON かつ `1`」で開閉を決める状態機械、ビット深度に応じたサンプルの変換
 - **Max の API は C API のまま使う（決定）。Min-API には移植しない**
@@ -342,8 +376,8 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 | 1 | 設計書のコミット | 完了 |
 | 2 | テストの土台（Catch2、`RAYSNIFF_BUILD_TESTS`、`RAYSNIFF_SANITIZER`） | 完了 |
 | 3 | キュー（`source/core/`：`locked_memory`、`byte_ring`、`packet_queue`） | 完了。通常・TSan・ASan でテストが通る |
-| 4 | キャプチャ部分（デバイスとファイルの両方から開ける、8 MB、stats、テストは `.pcap`） | 未着手 |
+| 4 | キャプチャ部分（`source/core/` のみ。構成は 5 章。external はまだつながない） | 完了。通常・TSan・ASan でテストが通る。`lo0` での実機のキャプチャも `[live]` のテストで確認済み（2026-11-11、root で実行） |
 | 5 | Max オブジェクト（状態機械、attribute、ポーリング、dumpout） | 未着手 |
 | 6 | README の更新、Max 上での確認 | 未着手 |
 
-`source/ray.sniff~/packet_capture.{h,cpp}` と `ray.sniff~.cpp` は、この設計の**前の段階**のコード（mutex と deque、古いものから自動で捨てる処理、作るときに pcap を開く処理、500 MB の指定）。手順 4・5 で置き換える。それまでは external に `raysniff_core` をリンクしない（`PacketQueue` という同じ名前のクラスがぶつかるため）。
+`source/ray.sniff~/packet_capture.{h,cpp}` と `ray.sniff~.cpp` は、この設計の**前の段階**のコード（mutex と deque、古いものから自動で捨てる処理、作るときに pcap を開く処理、500 MB の指定）。**手順 5 で**置き換え、そのときに external に `raysniff_core` をリンクする（**決定**。それまでは `PacketQueue` という同じ名前のクラスがぶつかるのでリンクしない）。手順 4 では external を触らない。

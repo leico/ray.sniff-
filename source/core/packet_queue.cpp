@@ -15,34 +15,22 @@ long normalize_queue_size_kb(long requested_kb) {
 // QueueStats
 // ---------------------------------------------------------------------------
 
-namespace {
-
-// Adds n to a counter that only one thread writes. A plain load + store is
-// enough there; it is NOT a read-modify-write, so it must not be used for a
-// counter with more than one writer (use fetch_add for that).
-void single_writer_add(std::atomic<std::uint64_t>& counter, std::uint64_t n) {
-    const std::uint64_t current = counter.load(std::memory_order_relaxed);
-    counter.store(current + n, std::memory_order_relaxed);
-}
-
-} // namespace
-
 void QueueStats::count_written(std::size_t bytes) {
-    single_writer_add(written_packets_, 1);
-    single_writer_add(written_bytes_, bytes);
+    written_packets_.add(1);
+    written_bytes_  .add(bytes);
 }
 
 void QueueStats::count_dropped(std::size_t bytes) {
-    single_writer_add(dropped_packets_, 1);
-    single_writer_add(dropped_bytes_, bytes);
+    dropped_packets_.add(1);
+    dropped_bytes_  .add(bytes);
 }
 
 QueueStatsSnapshot QueueStats::totals() const {
     QueueStatsSnapshot s;
-    s.written_packets = written_packets_.load(std::memory_order_relaxed);
-    s.written_bytes = written_bytes_.load(std::memory_order_relaxed);
-    s.dropped_packets = dropped_packets_.load(std::memory_order_relaxed);
-    s.dropped_bytes = dropped_bytes_.load(std::memory_order_relaxed);
+    s.written_packets = written_packets_.load();
+    s.written_bytes   = written_bytes_  .load();
+    s.dropped_packets = dropped_packets_.load();
+    s.dropped_bytes   = dropped_bytes_  .load();
     return s;
 }
 
@@ -50,9 +38,9 @@ QueueStatsSnapshot QueueStats::snapshot() const {
     const QueueStatsSnapshot t = totals();
     QueueStatsSnapshot s;
     s.written_packets = t.written_packets - baseline_.written_packets;
-    s.written_bytes = t.written_bytes - baseline_.written_bytes;
+    s.written_bytes   = t.written_bytes   - baseline_.written_bytes;
     s.dropped_packets = t.dropped_packets - baseline_.dropped_packets;
-    s.dropped_bytes = t.dropped_bytes - baseline_.dropped_bytes;
+    s.dropped_bytes   = t.dropped_bytes   - baseline_.dropped_bytes;
     return s;
 }
 

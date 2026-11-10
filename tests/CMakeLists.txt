@@ -13,6 +13,12 @@ add_executable(raysniff_tests
   test_locked_memory.cpp
   test_byte_ring.cpp
   test_packet_queue.cpp
+  test_pcap_device.cpp
+  test_drop_counter.cpp
+  test_pcap_source.cpp
+  test_capture_session.cpp
+  test_live_capture.cpp
+  pcap_file.cpp
 )
 target_link_libraries(raysniff_tests PRIVATE raysniff_core Catch2::Catch2WithMain)
 target_compile_options(raysniff_tests PRIVATE -Wall -Wextra)

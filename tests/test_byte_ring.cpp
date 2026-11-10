@@ -1,5 +1,7 @@
 #include "byte_ring.h"
 
+#include "read_all.h"
+
 #include <catch2/catch_test_macros.hpp>
 
 #include <atomic>
@@ -9,6 +11,7 @@
 #include <vector>
 
 using raysniff::ByteRing;
+using raysniff_test::read_all;
 
 namespace {
 
@@ -16,14 +19,6 @@ std::vector<std::uint8_t> bytes(std::initializer_list<int> values) {
     std::vector<std::uint8_t> v;
     for (int x : values) v.push_back(static_cast<std::uint8_t>(x));
     return v;
-}
-
-std::vector<std::uint8_t> read_all(ByteRing& ring) {
-    auto view = ring.begin_read();
-    std::vector<std::uint8_t> out;
-    for (std::uint64_t i = 0; i < view.size(); ++i) out.push_back(view[i]);
-    ring.commit_read(view, view.size());
-    return out;
 }
 
 // Thread tests are much slower under ThreadSanitizer.

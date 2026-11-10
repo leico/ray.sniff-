@@ -24,19 +24,28 @@ cmake --build build-test -j && ctest --test-dir build-test --output-on-failure
 # ThreadSanitizer（lock-free キューの変更後は必ず実行する）。ASan は thread を address に変える
 cmake -B build-thread -DRAYSNIFF_BUILD_TESTS=ON -DRAYSNIFF_SANITIZER=thread -DCMAKE_BUILD_TYPE=Debug -DCMAKE_OSX_ARCHITECTURES=arm64
 cmake --build build-thread -j --target raysniff_tests && ./build-thread/tests/raysniff_tests
+
+# 実際のデバイス（lo0）を使うテスト。/dev/bpf* の権限が要る（ない環境では SKIP される）
+sudo ./build-test/tests/raysniff_tests "[live]"
 ```
 
-TSan と ASan は同時に使えないので、ビルドディレクトリを分ける。
+TSan と ASan は同時に使えないので、ビルドディレクトリを分ける。`[live]` のテストは人が `sudo` で動かす（Claude の環境では権限がなく SKIP になる）。
 
 ## 構成
 
 - `source/core/`：Max に依存しない部分（静的ライブラリ `raysniff_core`）。external とテストの両方がリンクする
   - `locked_memory`：`mmap` と `mlock` で確保する記憶領域
   - `byte_ring`：lock-free SPSC のリングバッファ（`produced_` / `consumed_`）
+  - `single_writer_counter`：書き手が 1 つのカウンタ（stats で使う）
   - `packet_queue`：リングバッファと stats のカウンタ、`@queuesize` の丸め処理
+  - `pcap_device`：既定のデバイスの選択
+  - `pcap_source`：pcap ハンドル（デバイスまたは `.pcap` ファイル）、フィルタ
+  - `drop_counter`：pcap の取りこぼしの累計
+  - `capture_thread`：キャプチャスレッド（pcap → キュー）
+  - `capture_session`：Max オブジェクトから使う窓口（開く・閉じる・デバイスやフィルタの変更）
 - `source/ray.sniff~/ray.sniff~.cpp`：Max オブジェクト（引数、attribute、DSP、メッセージ）
-- `source/ray.sniff~/packet_capture.{h,cpp}`：**前の段階のコード**。手順 4 で `source/core/` に作り直す
-- `tests/`：Catch2 の単体テスト
+- `source/ray.sniff~/packet_capture.{h,cpp}`：**前の段階のコード**。手順 5 で消し、external を `raysniff_core` につなぐ
+- `tests/`：Catch2 の単体テスト。`pcap_file.{h,cpp}` はテスト用の `.pcap` をその場で作る補助、`read_all.h` はリングやキューの中身をすべて読み出す補助。`test_live_capture.cpp` は `[live]` タグの実デバイスのテスト
 - `max-sdk-base/`：submodule。編集しない
 - `help/`：ヘルプのパッチ
 

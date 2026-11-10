@@ -3,8 +3,8 @@
 #pragma once
 
 #include "byte_ring.h"
+#include "single_writer_counter.h"
 
-#include <atomic>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
@@ -12,18 +12,18 @@
 namespace raysniff {
 
 // @queuesize, in KB.
-constexpr long kQueueSizeMinKb = 128;           // larger than one packet (max 64 KB)
-constexpr long kQueueSizeMaxKb = 1024 * 1024;   // 1 GB
-constexpr long kQueueSizeDefaultKb = 1024;      // 1 MB
+constexpr long kQueueSizeMinKb     =  128;        // larger than one packet (max 64 KB)
+constexpr long kQueueSizeMaxKb     = 1024 * 1024; // 1 GB
+constexpr long kQueueSizeDefaultKb = 1024;        // 1 MB
 
 // Clamps to [kQueueSizeMinKb, kQueueSizeMaxKb] and rounds up to a power of two.
 long normalize_queue_size_kb(long requested_kb);
 
 struct QueueStatsSnapshot {
     std::uint64_t written_packets = 0;
-    std::uint64_t written_bytes = 0;
+    std::uint64_t written_bytes   = 0;
     std::uint64_t dropped_packets = 0;
-    std::uint64_t dropped_bytes = 0;
+    std::uint64_t dropped_bytes   = 0;
 };
 
 // Counters reported by the stats message. They are separate from the ring
@@ -44,11 +44,11 @@ public:
 private:
     QueueStatsSnapshot totals() const;
 
-    std::atomic<std::uint64_t> written_packets_{0};
-    std::atomic<std::uint64_t> written_bytes_{0};
-    std::atomic<std::uint64_t> dropped_packets_{0};
-    std::atomic<std::uint64_t> dropped_bytes_{0};
-    QueueStatsSnapshot baseline_;  // main thread only
+    SingleWriterCounter written_packets_;  // written by the capture thread only
+    SingleWriterCounter written_bytes_;
+    SingleWriterCounter dropped_packets_;
+    SingleWriterCounter dropped_bytes_;
+    QueueStatsSnapshot  baseline_;  // main thread only
 };
 
 class PacketQueue {
@@ -66,9 +66,9 @@ public:
     // On failure the current ring is kept and false is returned.
     bool resize(std::size_t capacity_bytes);
 
-    ByteRing& ring() { return *ring_; }
-    const ByteRing& ring() const { return *ring_; }
-    QueueStats& stats() { return stats_; }
+          ByteRing&   ring ()       { return *ring_; }
+    const ByteRing&   ring () const { return *ring_; }
+          QueueStats& stats()       { return stats_; }
 
 private:
     explicit PacketQueue(std::unique_ptr<ByteRing> ring);
