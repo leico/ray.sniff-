@@ -52,7 +52,7 @@ produced_.store(v + n, std::memory_order_release);             // 書く
 | 操作 | 内容 | このプロジェクトでの使いどころ |
 |---|---|---|
 | `exchange(v)` | `v` を書き、それまでの値を返す | `clear_requested_`：要求を読むと同時に降ろす |
-| `fetch_add(n)` | `n` を足し、それまでの値を返す | `QueueStats` のカウンタ |
+| `fetch_add(n)` | `n` を足し、それまでの値を返す | 使っていない（`QueueStats` のカウンタは書き手が 1 つなので load + store にしている。下の段落を参照） |
 | `compare_exchange_weak/strong(expected, v)` | 今の値が `expected` なら `v` に変える。違えば `expected` に今の値が入る | 使っていない（書き手が複数ある値を、ロックなしで更新するときに使う） |
 
 **load と store に分けると壊れる例**（`clear_requested_` の場合）：
@@ -66,7 +66,7 @@ if (clear_requested_.load()) {      // ① true を読んだ
 
 `exchange(false)` にすれば、② は `exchange` の前か後のどちらかにしかならないので、要求が消えることはない。
 
-**書き手が 1 つだけの変数なら、load と store に分けてよい。** `produced_` はキャプチャスレッドだけ、`consumed_` はオーディオスレッドだけが書くので、間に別の書き込みが入る心配がない。
+**書き手が 1 つだけの変数なら、load と store に分けてよい。** `produced_` はキャプチャスレッドだけ、`consumed_` はオーディオスレッドだけが書くので、間に別の書き込みが入る心配がない。`QueueStats` のカウンタもキャプチャスレッドだけが書くので、`fetch_add` ではなく補助関数 `single_writer_add`（load + store）で足している。名前に `atomic` を入れていないのは、不可分な加算だと誤解されないようにするため。
 
 ---
 
@@ -161,7 +161,7 @@ CPU は、メモリを**キャッシュライン**という単位（Intel は 64
 | `produced_` | キャプチャスレッドだけ | 書き手：`load(relaxed)` → `memcpy` → `store(release)`<br>読み手：`load(acquire)` | 自分しか書かない値は relaxed で読める。`memcpy` の中身を release / acquire で渡す |
 | `consumed_` | オーディオスレッドだけ | 読み手：`load(relaxed)` → 読む → `store(release)`<br>書き手：`load(acquire)` | 読み終わるまで上書きされないことを release / acquire で保証する |
 | `clear_requested_` | メインスレッド（立てる）、オーディオスレッド（降ろす） | `store(true, release)` / `exchange(false, acquire)` | 書き手が 2 つあるので、降ろす側は RMW にする。`produced_` を読む前に行う（design.md §4 ③） |
-| `QueueStats` のカウンタ | キャプチャスレッドだけ | `fetch_add(relaxed)` / `load(relaxed)` | 数値を数えるだけで、他のデータを受け渡さないので relaxed で足りる。`written_packets` と `written_bytes` を読む瞬間が少しずれることは許容する |
+| `QueueStats` のカウンタ | キャプチャスレッドだけ | 書き手：`single_writer_add`（`load(relaxed)` → `store(relaxed)`）<br>メインスレッド：`load(relaxed)` | 書き手が 1 つなので RMW は要らない。数値を数えるだけで、他のデータを受け渡さないので relaxed で足りる。`written_packets` と `written_bytes` を読む瞬間が少しずれることは許容する |
 
 ---
 
