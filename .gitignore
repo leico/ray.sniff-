@@ -1,21 +1,24 @@
-# Object files
+# Build output
+build/
+externals/
+support/
+
+# Object files / libraries
 *.o
-*.ko
-
-# Libraries
-*.lib
 *.a
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
 *.dylib
 
-# Executables
-*.exe
-*.out
-*.app
+# macOS
+.DS_Store
 
-# Vim backup
-*~
+# Xcode / editors
+xcuserdata/
+*.xcuserstate
+.vscode/
+.idea/
+
+# Vim backup / swap
+# NOTE: Do not use "*~" here; it also matches "ray.sniff~" (the object's own name).
+*.swp
+*.swo
+*.un~
