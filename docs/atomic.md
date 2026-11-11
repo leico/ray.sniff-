@@ -164,6 +164,7 @@ CPU は、メモリを**キャッシュライン**という単位（Intel は 64
 | `SingleWriterCounter`（`QueueStats` の 4 つのカウンタ、`PcapDropCounter::total_`） | キャプチャスレッドだけ | 書き手：`add()`（`load(relaxed)` → `store(relaxed)`）<br>メインスレッド：`load()`（`load(relaxed)`） | 書き手が 1 つなので RMW は要らない。数値を数えるだけで、他のデータを受け渡さないので relaxed で足りる。`written_packets` と `written_bytes` を読む瞬間が少しずれることは許容する。`PcapDropCounter` の基準値 `last_` はキャプチャスレッドしか使わないので atomic ではない（スレッドを作り直しても、`join` と `std::thread` の生成が前後関係を保証する）。`resetstats` 用の `baseline_`（`QueueStats` と `PcapDropCounter`）はメインスレッドしか使わないので、これも atomic ではない |
 | `CaptureThread::state_` | メインスレッド（`running` / `stopped`）、キャプチャスレッド（`finished` / `failed`） | キャプチャスレッド：`error_` を書く → `store(release)`<br>メインスレッド：`load(acquire)` → `error_` を読む | `failed` を見た時点で、エラーの文字列が書き終わっていることを release / acquire で保証する（design.md §5）。メインスレッドが書くのは、スレッドが動いていないとき（`start` の前と `join` の後）だけなので、2 つの書き手が同時に書くことはない |
 | `CaptureThread::stop_requested_` | メインスレッドだけ | `store(true, relaxed)` / `load(relaxed)` | 止まってほしいという合図だけで、データは受け渡さない。止まった後の状態は `join` が同期する |
+| `Engine::bytes_per_sample`（`ray.sniff~.cpp`、`@bitdepth`） | メインスレッドだけ | メインスレッド：`store(relaxed)`<br>オーディオスレッド：ブロックの先頭で `load(relaxed)` | 1 つの値だけで、他のデータを受け渡さないので relaxed で足りる。変えた次のブロックから反映される。作業用のバッファがないので、値が変わっても確保し直しは起きない |
 
 ---
 

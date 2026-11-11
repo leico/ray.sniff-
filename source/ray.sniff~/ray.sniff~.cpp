@@ -1,618 +1,513 @@
+// ray.sniff~ : outputs the raw bytes of network packets as an audio signal.
+//
+// The design is in docs/design.md (7 for this object). Everything that does
+// not need Max lives in source/core/ and is tested there; this file only
+// connects it to Max.
+//
+// Threads (design.md 3):
+//   main       messages, attributes, opening and closing the capture
+//   scheduler  the 100 ms clock: polls DSP and capture state, wakes the qelem
+//   audio      perform64: reads the queue (its only reader)
+//   capture    inside CaptureSession: writes the queue (its only writer)
+// Messages and attribute changes that arrive on another thread are deferred
+// to the main thread, so the session, the gate and the stats baselines are
+// only touched there.
 
-#include <iostream>
-#include <pcap.h>
-#include <sstream>
-#include <string>
-#include <list>
-#include <vector>
+#include "capture_gate.h"
+#include "capture_session.h"
+#include "packet_queue.h"
+#include "sample_reader.h"
 
-extern "C" {
 #include "ext.h"
 #include "ext_obex.h"
 #include "ext_systhread.h"
 #include "z_dsp.h"
-}
 
-typedef union {
-  unsigned int num;
-  u_char str[4];
-} DATA;
+#include <atomic>
+#include <cstdint>
+#include <cstring>
+#include <memory>
+#include <mutex>
+#include <string>
+#include <vector>
 
-typedef struct _raysniff{
-  t_pxobject _ob;
-  
-  t_systhread       _systhread;
-  t_systhread_mutex _mutex;
-  bool _systhread_cancel;
+namespace {
 
-  void *_qelem;
-  void *_outlet;
+constexpr long kDefaultBitdepth = 16;  // design.md 7.1
+constexpr double kPollIntervalMs = 100.0;
 
-  pcap_t *_pcap_handle;
-  unsigned int _peak;
-           int _byte;
+enum class DeferredKind {
+    message,    // send the message `name`
+    attribute,  // set the attribute `name`
+};
 
-  std :: list< std :: vector<u_char> > *_datapool;
-  int _datapos;
+// A message or an attribute value that arrived on another thread and waits
+// for the main thread.
+struct DeferredCall {
+    DeferredKind kind;
+    t_symbol* name;
+    std::vector<t_atom> args;
+};
 
-  int _count;
-  
-} t_raysniff;
-
-//void   raysniff_dsp      (t_raysniff *x, t_signal **sp, short *count); //deprecated
-//t_int* raysniff_perform  (t_int *w);                                   //deprecated
-void   raysniff_dsp64    (t_raysniff *x, t_object *dsp64, short *count, double samplerate, long maxvectorsize, long flags);
-void   raysniff_perform64(t_raysniff *x, t_object *dsp64, double **ins, long numins, double **outs, long numouts, long sampleframes, long flags, void *userparam);
-
-void  raysniff_int      (t_raysniff *x, long num);
-void  raysniff_stop     (t_raysniff *x);
-void* raysniff_thread   (t_raysniff *x);
-void  raysniff_qfx      (t_raysniff *x);
-void  raysniff_size     (t_raysniff *x);
-void  raysniff_assist   (t_raysniff *x, void *b, long m, long a, char *s);
-void  raysniff_free     (t_raysniff *x);
-void* raysniff_new      (t_symbol *s, int argc, t_atom *argv); 
-
-static t_class *raysniff = NULL;
-
-void ext_main(void *r){
-  
-  t_class *c;
-
-  c = class_new("ray.sniff~", (method)raysniff_new, (method)raysniff_free, sizeof(t_raysniff), 0L, A_GIMME, 0);
- 
-  class_addmethod(c, (method)raysniff_int,       "int",       A_DEFLONG, 0);
-  class_addmethod(c, (method)raysniff_size,      "size",      A_NOTHING, 0);
-//  class_addmethod(c, (method)raysniff_dsp,       "dsp",       A_CANT,    0); //deprecated
-  class_addmethod(c, (method)raysniff_dsp64,     "dsp64",     A_CANT,    0);
-  class_addmethod(c, (method)raysniff_assist,    "assist",    A_CANT,    0);
-
-  class_dspinit(c);
-  class_register(CLASS_BOX, c);
-
-  raysniff = c;
-	return;
-}
-
-
-/* ==================================================== *
- * raysniff_dsp64                                       *
- * ==================================================== */
-void raysniff_dsp64(t_raysniff *x, t_object *dsp64, short *count, double samplerate, long maxvectorsize, long flags){
-
-  object_method(dsp64, gensym("dsp_add64"), x, raysniff_perform64, 0, NULL);
-}
-
-/* ==================================================== *
- * raysniff_perform64                                   *
- * ==================================================== */
-
-double raysniff_getsample64(t_raysniff *x);
-void   raysniff_getoutput64(t_raysniff *x, double **outs, long sampleframes);
-
-
-void raysniff_perform64(t_raysniff *x, t_object *dsp64, double **ins, long numins, double **outs, long numouts, long sampleframes, long flags, void *userparam){
-
-
-  raysniff_getoutput64(x, outs, sampleframes);
-
-}
-
-/* ==================================================== *
- * raysniff_getsample64                                 *
- * ==================================================== */
-double raysniff_getsample64(t_raysniff *x){
-
-
-  if( systhread_mutex_trylock(x -> _mutex) == 0){
-
-    DATA data = {0};
-    int n = x -> _byte;
-    while(n){
-      if(x -> _datapool -> empty()){
-        data.str[x -> _byte - n] = 0;
-        n --;
-        continue;
-      }
-
-      if(x -> _datapos >= x -> _datapool -> front().size()){
-        x -> _datapos = 0;
-        x -> _datapool -> pop_front();
-        continue;
-      }
-
-      data.str[x -> _byte - n] = x -> _datapool -> front().at(x -> _datapos);
-      x -> _datapos ++;
-      n --;
+// Calls handed from other threads to the main thread. push() from any thread
+// except the audio thread, take() on the main thread; the lock is held only
+// inside these two. The audio thread never takes it.
+class DeferredCalls {
+public:
+    void push(DeferredCall call) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        calls_.push_back(std::move(call));
     }
 
-    systhread_mutex_unlock(x -> _mutex);
-
-    return (data.num == 0) ? data.num : -((double)data.num - x -> _peak) / x -> _peak;
-  }
-
-  return 0;
-}
-
-
-/* ==================================================== *
- * raysniff_getoutput64                                 *
- * ==================================================== */
-void raysniff_getoutput64(t_raysniff *x, double **outs, long sampleframes){
-
-  t_double *out1 = outs[0];
-  int n = sampleframes;
-
-  while(n --)
-    *out1 ++ = raysniff_getsample64(x);
-}
-
-
-/* ==================================================== *
- * raysniff_dsp     DEPRECATED                          *
- * ==================================================== */
-/*
-void raysniff_dsp(t_raysniff *x, t_signal **sp, short *count){
-
-  dsp_add(raysniff_perform, 3, x, sp[0] -> s_vec, sp[0] -> s_n);
-}
-*/
-
-/* ==================================================== *
- * raysniff_perform   DEPRECATED                        *
- * ==================================================== */
-/*
-float raysniff_getsample32(t_raysniff *x);
-void  raysniff_getoutput32(t_raysniff *x, t_float **outs, int sampleframes);
-*/
-/*
-t_int* raysniff_perform(t_int *w){
-  t_raysniff *x    = (t_raysniff *)(w[1]);
-  t_float    *out1 = (t_float    *)(w[2]);
-  int            n = (int)          w[3];
-
-  raysniff_getoutput32(x, &out1, n);
-
-  return w + 4;
-}
-*/
-/* ==================================================== *
- * raysniff_getsample32  DEPRECATED                     *
- * ==================================================== */
-/*
-t_float raysniff_getsample32(t_raysniff *x){
-
-  if( systhread_mutex_trylock(x -> _mutex) == 0){
-
-    DATA data = {0};
-    int n = x -> _byte;
-    while(n){
-      if(x -> _datapool -> empty()){
-        data.str[x -> _byte - n] = 0;
-        n --;
-        continue;
-      }
-
-      if(x -> _datapos >= x -> _datapool -> front().size()){
-        x -> _datapos = 0;
-        x -> _datapool -> pop_front();
-        continue;
-      }
-
-      data.str[x -> _byte - n] = x -> _datapool -> front().at(x -> _datapos);
-      x -> _datapos ++;
-      n --;
+    // Takes every call pushed so far, in the order they arrived, and leaves
+    // none behind. The caller runs them without the lock.
+    std::vector<DeferredCall> take() {
+        std::vector<DeferredCall> taken;
+        std::lock_guard<std::mutex> lock(mutex_);
+        taken.swap(calls_);
+        return taken;
     }
 
-    systhread_mutex_unlock(x -> _mutex);
+private:
+    std::mutex mutex_;
+    std::vector<DeferredCall> calls_;
+};
 
-    return (data.num == 0) ? data.num : -((t_float)data.num - x -> _peak) / x -> _peak;
-  }
+// t_raysniff is allocated by Max (object_alloc) without running C++
+// constructors, so its C++ parts are created with new and kept by pointer:
+// Engine (below) and DeferredCalls (above).
+//
+// Engine is the path from the capture to the audio: the queue, the capture,
+// and the decision to open or close it. It uses no Max types. The members are
+// declared in this order so that the session (and its capture thread) is
+// destroyed before the queue it writes to.
+struct Engine {
+    explicit Engine(std::unique_ptr<raysniff::PacketQueue> q)
+        : queue(std::move(q)), ring(&queue->ring()), session(*queue) {}
 
-  return 0;
-
-}
-*/
-/* ==================================================== *
- * raysniff_getoutput32   DEPRECATED                    *
- * ==================================================== */
-/*
-void raysniff_getoutput32(t_raysniff *x, t_float **outs, int sampleframes){
-
-  t_float *out1 = outs[0];
-  int n = sampleframes;
-
-  while(n --)
-    *out1 ++ = raysniff_getsample32(x);
-}
-*/
-
-/* ==================================================== *
- * raysniff_int                                         *
- * ==================================================== */
-void raysniff_int(t_raysniff *x, long num){
-
-  if(num <= 0){
-    raysniff_stop(x);
-    return;
-  }
-
-  if(x -> _systhread == NULL){
-    post("starting a pcap thread");
-    systhread_create((method)raysniff_thread, x, 0, 0, 0, &x -> _systhread);
-  }
-}
-
-
-
-
-/* ==================================================== *
- * raysniff_size                                        *
- * ==================================================== */
-void raysniff_size(t_raysniff *x){
-
-  qelem_set(x -> _qelem);
-}
-
-
-
-
-/* ==================================================== *
- * raysniff_stop                                        *
- * ==================================================== */
-void raysniff_stop(t_raysniff *x){
-
-  unsigned int ret;
-
-  if(x -> _systhread){
-    post("stopping pcap thread");
-    x -> _systhread_cancel = true;
-    systhread_join(x -> _systhread, &ret);
-    x -> _systhread = NULL;
-  }
-}
-
-
-
-
-/* ==================================================== *
- * raysniff_thread                                      *
- * ==================================================== */
-void* raysniff_thread(t_raysniff *x){
-
-  struct pcap_pkthdr  header;
-  const  u_char      *packet;
-
-  while(1){
-
-    if(x -> _systhread_cancel) break;
-
-    while(systhread_mutex_trylock(x -> _mutex) != 0);
-
-    packet = pcap_next(x -> _pcap_handle, &header);
-    if(packet != NULL){
-
-      u_char data[header.caplen];
-      u_char *pos = data;
-      memcpy(data, packet, header.caplen);
-
-      x -> _datapool -> push_back( std :: vector<u_char>(pos, pos + header.caplen) );
+    // Replaces the queue's ring and keeps `ring` pointing at the new one.
+    // Only while DSP and the capture are stopped (@queuesize, design.md 7.2).
+    bool resize_queue(std::size_t bytes) {
+        if (!queue->resize(bytes)) return false;
+        ring = &queue->ring();
+        return true;
     }
-		
-		systhread_mutex_unlock(x -> _mutex);
 
-    systhread_sleep(1);
-    //usleep( 1000 );
-  }
+    std::unique_ptr<raysniff::PacketQueue> queue;
+    // What perform64 reads. Holding the ring itself keeps the audio thread
+    // away from PacketQueue's stats, which the capture thread keeps writing.
+    // Always &queue->ring(): change the queue only through resize_queue().
+    raysniff::ByteRing* ring;
+    std::atomic<int> bytes_per_sample{raysniff::bytes_per_sample(kDefaultBitdepth)};
 
-  x -> _systhread_cancel = false;
+    raysniff::CaptureSession session;
+    raysniff::CaptureGate gate;  // main thread only
+};
 
-  systhread_exit(0);
-  return NULL;
+} // namespace
+
+struct t_raysniff {
+    t_pxobject ob;
+    void* dumpout;
+    void* poll_clock;
+    void* update_qelem;
+    void* deferred_qelem;
+
+    // Scheduler thread only (raysniff_poll): what the previous poll saw.
+    bool polled_dsp;
+    raysniff::CaptureState polled_state;
+
+    // Attributes (main thread).
+    long bitdepth;
+    t_symbol* device;  // "" chooses the default device
+    t_symbol* filter;  // the whole BPF expression as one symbol
+    long queuesize;    // KB
+
+    Engine* engine;
+    DeferredCalls* deferred;
+};
+
+static t_class* raysniff_class = nullptr;
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+// Main thread (deferred_qelem). Runs the calls in the order they arrived.
+// A qelem rather than defer_low(): qelem_free() in raysniff_free cancels a
+// pending run, so this never runs for a freed object.
+static void raysniff_run_deferred(t_raysniff* x) {
+    for (DeferredCall& call : x->deferred->take()) {
+        const long argc = static_cast<long>(call.args.size());
+        if (call.kind == DeferredKind::attribute) object_attr_setvalueof(x, call.name, argc, call.args.data());
+        else                                      object_method_typed   (x, call.name, argc, call.args.data(), nullptr);
+    }
 }
 
-
-
-
-
-
-
-/* ==================================================== *
- * raysniff_qfx                                         *
- * ==================================================== */
-void raysniff_qfx(t_raysniff *x){
-
-  while( systhread_mutex_trylock(x -> _mutex) != 0);
-  int size = x -> _datapool -> size();
-  systhread_mutex_unlock(x -> _mutex);
-
-  outlet_int(x -> _outlet, size);
-
+// On a thread other than the main one, keeps a copy of the call for
+// raysniff_run_deferred and returns true. On the main thread returns false,
+// and the caller goes on.
+static bool defer_call(t_raysniff* x, DeferredKind kind, const char* name, long argc, const t_atom* argv) {
+    if (systhread_ismainthread()) return false;
+    x->deferred->push({kind, gensym(name), std::vector<t_atom>(argv, argv + argc)});
+    qelem_set(x->deferred_qelem);
+    return true;
 }
 
+static void report_open(t_raysniff* x, const raysniff::CaptureResult& result) {
+    if (result.ok()) {
+        if (!result.message.empty()) object_warn((t_object*)x, "%s", result.message.c_str());
+        const raysniff::CaptureSession& session = x->engine->session;
+        object_post((t_object*)x, "capturing on %s%s%s", session.source_name().c_str(),
+                    session.filter().empty() ? "" : ", filter: ", session.filter().c_str());
+        return;
+    }
+    object_error((t_object*)x, "%s", result.message.c_str());
+    if (result.error == raysniff::CaptureError::permission_denied) {
+        // design.md 6: the object does not change permissions itself.
+        object_error((t_object*)x, "capturing needs access to /dev/bpf*. Either:");
+        object_error((t_object*)x, "  1. brew install --cask wireshark-chmodbpf (then log in again)");
+        object_error((t_object*)x, "  2. start Max as root");
+    }
+}
 
+static void report_lock(t_raysniff* x) {
+    const raysniff::ByteRing& ring = *x->engine->ring;
+    if (ring.locked()) return;
+    // design.md 4 (3): keep running without the lock, but say so.
+    object_warn((t_object*)x, "can't lock the queue in memory (%s); audio may drop out when memory is low",
+                std::strerror(ring.lock_errno()));
+}
 
-/* ==================================================== *
- * raysniff_assist                                      *
- * ==================================================== */
-void raysniff_assist(t_raysniff *x, void *b, long m, long a, char *s){
+static void output_value(t_raysniff* x, const char* group, const char* name, std::uint64_t value) {
+    t_atom atoms[2];
+    atom_setsym (&atoms[0], gensym(name));
+    atom_setlong(&atoms[1], static_cast<t_atom_long>(value));
+    outlet_anything(x->dumpout, gensym(group), 2, atoms);
+}
 
-  switch(m){
-    case ASSIST_INLET:
-      {
-        switch(a){
-          case 0:
-            sprintf(s, "(toggle)on/off a new thread");
+// Joins atoms into one string, as the legacy filter arguments and @filter do.
+static std::string join_atoms(long argc, const t_atom* argv) {
+    std::string joined;
+    for (long i = 0; i < argc; ++i) {
+        std::string token;
+        switch (atom_gettype(argv + i)) {
+            case A_LONG:  token = std::to_string(atom_getlong (argv + i)); break;
+            case A_FLOAT: token = std::to_string(atom_getfloat(argv + i)); break;
+            case A_SYM:   token = atom_getsym(argv + i)->s_name;           break;
+            default: continue;
+        }
+        if (!joined.empty()) joined += ' ';
+        joined += token;
+    }
+    return joined;
+}
+
+// ---------------------------------------------------------------------------
+// Opening and closing (design.md 7.4)
+// ---------------------------------------------------------------------------
+
+// Main thread. Asks the gate what to do now and does it.
+static void raysniff_update(t_raysniff* x) {
+    Engine& engine = *x->engine;
+    const bool dsp_on = sys_getdspobjdspstate((t_object*)x) != 0;
+    const bool failed = engine.session.state() == raysniff::CaptureState::failed;
+
+    switch (engine.gate.update(dsp_on, engine.session.is_open(), failed)) {
+        case raysniff::GateAction::none:
+            break;
+        case raysniff::GateAction::open: {
+            const raysniff::CaptureResult result = engine.session.open_live(x->device->s_name);
+            report_open(x, result);
+            engine.gate.open_result(result.ok());
             break;
         }
-      }
-      break;
-    case ASSIST_OUTLET:
-      {
-        switch(a){
-          case 0:
-            sprintf(s, "(signal)network signal");
+        case raysniff::GateAction::close:
+            engine.session.close();
             break;
-          case 1:
-            sprintf(s, "(int)report quantity of packet");
+        case raysniff::GateAction::close_after_failure: {
+            std::string reason;
+            if (engine.session.error(reason)) object_error((t_object*)x, "%s", reason.c_str());
+            engine.session.close();
             break;
         }
-      }
-      break;
-  }
+    }
 }
 
-
-
-
-/* ==================================================== *
- * raysniff_free                                        *
- * ==================================================== */
-void  raysniff_free(t_raysniff *x){
-
-  dsp_free((t_pxobject *)x);
-
-  raysniff_stop(x);
-
-  if(x -> _qelem) qelem_free          (x -> _qelem);
-  if(x -> _mutex) systhread_mutex_free(x -> _mutex);
-
-  if(x -> _pcap_handle) pcap_close(x -> _pcap_handle);
-
-  delete x -> _datapool;
+// Scheduler thread. Wakes the main thread only when something changed.
+static void raysniff_poll(t_raysniff* x) {
+    const bool dsp_on = sys_getdspobjdspstate((t_object*)x) != 0;
+    const raysniff::CaptureState state = x->engine->session.state();  // any thread
+    if (dsp_on != x->polled_dsp || state != x->polled_state) {
+        x->polled_dsp   = dsp_on;
+        x->polled_state = state;
+        qelem_set(x->update_qelem);
+    }
+    clock_fdelay(x->poll_clock, kPollIntervalMs);
 }
 
+// ---------------------------------------------------------------------------
+// Messages (design.md 7.3)
+// ---------------------------------------------------------------------------
 
-
-/* ==================================================== *
- * raysniff_new                                         *
- * ==================================================== */
-
-//Function prototype
-t_max_err raysniff_bitdepth(t_atom *data, unsigned int *maxdata, int *bytes);
-t_max_err raysniff_pcapinit(long argc, t_atom *argv, pcap_t **handle);
-
-//raysniff_new function
-void* raysniff_new (t_symbol *s, int argc, t_atom *argv){
-
-  post("arguments:");
-  post("must [long bitdepth] |any [string devicename] [long ipaddress] [long subnetmask] [string[] filter]");
-
-  unsigned int peak;
-  int byte;
-  if(raysniff_bitdepth(argv, &peak, &byte) != MAX_ERR_NONE){
-    error("error : in 1st argument");
-    return NULL;
-  }
-
-  pcap_t *handle = NULL;
-  if(raysniff_pcapinit(argc - 1, argv + 1, &handle) != MAX_ERR_NONE){
-    error("error : pcap_init");
-    return NULL;
-  }
-
-
-  t_raysniff *x;
-
-  x = (t_raysniff *)object_alloc(raysniff);
-
-  if(x){
-
-    x -> _outlet    = outlet_new(x, NULL);
-    x -> _qelem     =  qelem_new(x, (method)raysniff_qfx);
-    x -> _systhread = NULL;
-		x -> _systhread_cancel = false;
-    systhread_mutex_new(&(x -> _mutex), 0);
-
-    x -> _pcap_handle = handle;
-    x -> _peak        = peak;
-    x -> _byte        = byte;
-
-    x -> _datapool    = new std :: list < std :: vector<u_char> >;
-		x -> _datapos     = 0;
-
-    dsp_setup((t_pxobject *)x, 0);
-    outlet_new(x, "signal");
-  }
-
-  return (x);
+static void raysniff_int(t_raysniff* x, long n) {
+    t_atom a;
+    atom_setlong(&a, n);
+    if (defer_call(x, DeferredKind::message, "int", 1, &a)) return;
+    x->engine->gate.set_requested(n > 0);
+    raysniff_update(x);
 }
 
-
-
-/* ==================================================== *
- * raysniff_bitdepth                                    *
- * ==================================================== */
-t_max_err raysniff_bitdepth(t_atom *data, unsigned int *maxdata, int *bytes){
-
-  if (atom_gettype(data) != A_LONG){
-    error("Not Long Type: %ld", atom_gettype(data));
-    return MAX_ERR_GENERIC;
-  }
-
-
-  switch (atom_getlong(data)) {
-    case 8  :	*maxdata = 0x80;       *bytes = 1; break;
-    case 16 :	*maxdata = 0x8000;     *bytes = 2; break;
-    case 24 :	*maxdata = 0x800000;   *bytes = 3; break;
-    case 32 :	*maxdata = 0x80000000; *bytes = 4; break;
-
-    default:
-              error("I cant use %ld bit", atom_getlong(data));
-              error("please set 8 or 16 or 24 or 32");
-              return MAX_ERR_GENERIC;
-              break;
-  }
-
-  return MAX_ERR_NONE;
+static void raysniff_clear(t_raysniff* x) {
+    x->engine->ring->request_clear();  // any thread; the audio thread applies it
 }
 
-/* ==================================================== *
- * raysniff_pcapinit                                    *
- * ==================================================== */
-t_max_err raysniff_pcapinit(long argc, t_atom *argv, pcap_t **handle) {
+static void raysniff_stats(t_raysniff* x) {
+    if (defer_call(x, DeferredKind::message, "stats", 0, nullptr)) return;
+    Engine& engine = *x->engine;
+    const raysniff::QueueStatsSnapshot queue_snapshot = engine.queue->stats().snapshot();
 
-  post("PacketCaptureInit....");
+    output_value(x, "pcap", "dropped_packets" , engine.session.dropped_packets());
+    output_value(x, "queue", "locked"         , engine.ring->locked() ? 1 : 0);
+    output_value(x, "queue", "size"           , engine.ring->unread_bytes());
 
-  char *dev = NULL;
+    output_value(x, "queue", "written_packets", queue_snapshot.written_packets);
+    output_value(x, "queue", "written_bytes"  , queue_snapshot.written_bytes);
+    output_value(x, "queue", "dropped_packets", queue_snapshot.dropped_packets);
+    output_value(x, "queue", "dropped_bytes"  , queue_snapshot.dropped_bytes);
+}
 
+static void raysniff_resetstats(t_raysniff* x) {
+    if (defer_call(x, DeferredKind::message, "resetstats", 0, nullptr)) return;
+    Engine& engine = *x->engine;
+    engine.queue->stats().reset();
+    engine.session.reset_dropped_packets();
+}
 
-  if (argc > 0) {
-    if (atom_gettype(argv) == A_SYM)
-      dev = atom_getsym(argv) -> s_name;
-  }
+// Deprecated: use `stats` (queue size). Kept for old patches.
+static void raysniff_size(t_raysniff* x) {
+    t_atom a;
+    atom_setlong(&a, static_cast<t_atom_long>(x->engine->ring->unread_bytes()));
+    outlet_anything(x->dumpout, gensym("size"), 1, &a);
+}
 
-  //If not args, Set Device Automatically
-  char errbuf[PCAP_ERRBUF_SIZE];
-  if (NULL == dev){
-    dev = pcap_lookupdev(errbuf);
-    if (dev == NULL) {
-      error("Device not found");
-      error("%s", errbuf);
-      return MAX_ERR_GENERIC;
+static void raysniff_assist(t_raysniff*, void*, long m, long a, char* s) {
+    constexpr size_t kAssistMax = 256;
+    if (m == ASSIST_INLET) {
+        snprintf(s, kAssistMax, "(int) 1 to capture while DSP is on, 0 to stop; clear, stats, resetstats");
+    } else if (a == 0) {
+        snprintf(s, kAssistMax, "(signal) packet bytes as audio");
+    } else {
+        snprintf(s, kAssistMax, "dumpout: stats (pcap ..., queue ...), size");
     }
-  }
-  post("Device : %s", dev);
+}
 
-  //Get Ip and Netmask
-  bpf_u_int32 netmask = 0;
-  bpf_u_int32 ip      = 0;
+// ---------------------------------------------------------------------------
+// Attributes (design.md 7.2)
+// ---------------------------------------------------------------------------
 
-  if(argc >= 3){
-    if ((atom_gettype(argv + 1) == A_LONG) && (atom_gettype(argv + 2) == A_LONG)) {
-      ip      = atom_getlong(argv + 1);
-      netmask = atom_getlong(argv + 2);
+static t_max_err raysniff_set_bitdepth(t_raysniff* x, void*, long argc, t_atom* argv) {
+    if (argc < 1) return MAX_ERR_GENERIC;
+    const long bitdepth = atom_getlong(argv);
+    const int bytes = raysniff::bytes_per_sample(bitdepth);
+    if (bytes == 0) {
+        object_error((t_object*)x, "unsupported bitdepth %ld (use 8, 16, 24 or 32)", bitdepth);
+        return MAX_ERR_GENERIC;
     }
-  }
-  else{
-    if (pcap_lookupnet(dev, &ip, &netmask, errbuf) == -1) {
-      error("can't get netmasks");
-      error("%s", errbuf);
-      ip      = 0;
-      netmask = 0;
+    x->bitdepth = bitdepth;
+    // Read by perform64 at the start of each block; nothing else depends on it.
+    x->engine->bytes_per_sample.store(bytes, std::memory_order_relaxed);
+    return MAX_ERR_NONE;
+}
+
+static t_max_err raysniff_set_device(t_raysniff* x, void*, long argc, t_atom* argv) {
+    if (defer_call(x, DeferredKind::attribute, "device", argc, argv)) return MAX_ERR_NONE;
+    t_symbol* device = (argc > 0 && atom_gettype(argv) == A_SYM) ? atom_getsym(argv) : gensym("");
+    Engine& engine = *x->engine;
+
+    if (engine.session.is_open()) {
+        // Opens the new device first; on failure the current one keeps running.
+        const raysniff::CaptureResult result = engine.session.open_live(device->s_name);
+        report_open(x, result);
+        if (!result.ok()) return MAX_ERR_GENERIC;
     }
-  }
-  post("ip = %ld, netmask = %ld", ip, netmask);
+    x->device = device;
+    engine.gate.config_changed();
+    raysniff_update(x);
+    return MAX_ERR_NONE;
+}
 
-  /******** Packet Capture Device settings *******/
-    //get Device Handle
-  *handle = pcap_create( dev, errbuf );
-  if (*handle == NULL) {
-    error("Can't get device handle");
-    error("%s", errbuf);
-    return MAX_ERR_GENERIC;
-  }
+static t_max_err raysniff_set_filter(t_raysniff* x, void*, long argc, t_atom* argv) {
+    if (defer_call(x, DeferredKind::attribute, "filter", argc, argv)) return MAX_ERR_NONE;
+    const std::string expression = join_atoms(argc, argv);
+    Engine& engine = *x->engine;
 
-    //set snap length : max length of a captured packet
-  int status = 0;
-  status = pcap_set_snaplen( *handle, 65535);
-  if( status != 0 ) { 
-    error( "set_snaplen status != 0" );
-    error( "%s", errbuf);
-    return MAX_ERR_GENERIC;
-  }
-
-    // set buffer timeout : if set 0, infinity waiting
-  status = pcap_set_timeout( *handle, 1 );
-  if( status != 0 ) {
-    error( "set_timeout status != 0" );
-    error( "%s", errbuf);
-    return MAX_ERR_GENERIC;
-  }
-
-    // set promiscuous mode : disable -> only capture related packets
-  status = pcap_set_promisc( *handle, 1 );
-  if( status != 0 ) { 
-    error( "set_promisc != 0" );
-    error( "%s", errbuf );
-    return MAX_ERR_GENERIC;
-  }
-
-    // set buffer size : prepare enough data buffer size for multi media contents
-  status = pcap_set_buffer_size( *handle, 1024 * 1024 * 500 ); // 500 MB
-  if( status != 0 ) { 
-    error( "set_buffer_size != 0" );
-    error( "%s", errbuf );
-    return MAX_ERR_GENERIC;
-  }
-
-  status = pcap_activate( *handle );
-  if( status != 0 ) { 
-    error( "pcap_activate != 0" );
-    error( "status = %d", status);
-    error( "%s", errbuf );
-    return MAX_ERR_GENERIC;
-  }
-
-  //*handle = pcap_open_live(dev, 4096, 1, 1, errbuf);
-  //post("Success get Device Handle");
-  
-  //packet filter
-  //makefilter
-  using namespace std;
-  string buff;
-  for (int i = 3 ; i < argc ; i ++) {
-    stringstream ss;
-    switch (atom_gettype(argv + i)) {
-      case A_LONG:
-        ss << atom_getlong(argv + i);
-        buff.append(ss.str());
-        buff.append(" ");
-        ss.clear();
-        break;
-      case A_SYM:
-        buff.append(atom_getsym(argv + i) -> s_name);
-        buff.append(" ");
-        break;
-      default:
-        error("Wrong Type or No Filter");
-        break;
+    // While closed this only checks the syntax. On failure the old filter stays.
+    const raysniff::CaptureResult result = engine.session.set_filter(expression);
+    if (!result.ok()) {
+        object_error((t_object*)x, "%s", result.message.c_str());
+        return MAX_ERR_GENERIC;
     }
-  }
-  char filter[buff.length()];
-  strcpy(filter, buff.c_str());
-  buff.clear();
+    x->filter = gensym(expression.c_str());
+    engine.gate.config_changed();
+    raysniff_update(x);
+    return MAX_ERR_NONE;
+}
 
-  struct bpf_program fp;
-  if(pcap_compile(*handle, &fp, filter, 0, ip) == -1){
-    error("can't compile filter"); 
-    error("%s", filter);
-    error("%s", pcap_geterr(*handle));
-    return MAX_ERR_GENERIC;
-  }
-  post("Success Compile Filter");
+static t_max_err raysniff_set_queuesize(t_raysniff* x, void*, long argc, t_atom* argv) {
+    if (defer_call(x, DeferredKind::attribute, "queuesize", argc, argv)) return MAX_ERR_NONE;
+    if (argc < 1) return MAX_ERR_GENERIC;
+    const long requested = atom_getlong(argv);
+    const long size = raysniff::normalize_queue_size_kb(requested);
+    if (size != requested) object_post((t_object*)x, "queuesize %ld KB -> %ld KB", requested, size);
+    if (size == x->queuesize) return MAX_ERR_NONE;
 
-  //setfilter
-  if (pcap_setfilter(*handle, &fp) == -1) {
-    error("can't setting filter");
-    error("%s", filter);
-    error("%s", pcap_geterr(*handle));
-    return MAX_ERR_GENERIC;
-  }
-  post("Success Set Filter");
-  post("Filter : %s", filter);
+    Engine& engine = *x->engine;
+    // perform64 holds the ring and the capture thread writes to it.
+    if (sys_getdspobjdspstate((t_object*)x) || engine.session.is_open()) {
+        object_warn((t_object*)x, "queuesize can be changed only while DSP and the capture are stopped; ignored");
+        return MAX_ERR_GENERIC;
+    }
+    if (!engine.resize_queue(static_cast<std::size_t>(size) * 1024)) {
+        object_error((t_object*)x, "can't allocate a queue of %ld KB; keeping %ld KB", size, x->queuesize);
+        return MAX_ERR_GENERIC;
+    }
+    x->queuesize = size;
+    report_lock(x);
+    return MAX_ERR_NONE;
+}
 
-  post("Success Pcap Init");
+// ---------------------------------------------------------------------------
+// DSP
+// ---------------------------------------------------------------------------
 
-  return MAX_ERR_NONE;
+static void raysniff_perform64(t_raysniff* x, t_object*, double**, long, double** outs, long,
+                               long sampleframes, long, void*) {
+    Engine& engine = *x->engine;
+    raysniff::read_samples(*engine.ring, engine.bytes_per_sample.load(std::memory_order_relaxed), outs[0],
+                           sampleframes);
+}
+
+static void raysniff_dsp64(t_raysniff* x, t_object* dsp64, short*, double, long, long) {
+    object_method(dsp64, gensym("dsp_add64"), x, raysniff_perform64, 0, nullptr);
+    qelem_set(x->update_qelem);  // DSP is starting: check now rather than at the next poll
+}
+
+// ---------------------------------------------------------------------------
+// Lifecycle
+// ---------------------------------------------------------------------------
+
+// The legacy positional arguments (design.md 7.1):
+//   <bitdepth> [device] [ip] [netmask] [filter ...]
+// ip and netmask are ignored. Attributes given with @ are applied afterwards
+// and win.
+static void apply_legacy_arguments(t_raysniff* x, long argc, t_atom* argv) {
+    if (argc >= 1) {
+        const long bitdepth = atom_gettype(argv) == A_LONG ? atom_getlong(argv) : 0;
+        if (raysniff::bytes_per_sample(bitdepth) != 0) {
+            object_attr_setlong(x, gensym("bitdepth"), bitdepth);
+        } else {
+            object_error((t_object*)x, "1st argument must be a bitdepth (8, 16, 24 or 32); using %ld",
+                         kDefaultBitdepth);
+        }
+    } else {
+        object_error((t_object*)x, "no bitdepth given (8, 16, 24 or 32); using %ld", kDefaultBitdepth);
+    }
+    if (argc >= 2 && atom_gettype(argv + 1) == A_SYM) {
+        object_attr_setsym(x, gensym("device"), atom_getsym(argv + 1));
+    }
+    if (argc >= 5) {
+        object_attr_setvalueof(x, gensym("filter"), argc - 4, argv + 4);
+    }
+}
+
+static void* raysniff_new(t_symbol*, long argc, t_atom* argv) {
+    auto queue = raysniff::PacketQueue::create(static_cast<std::size_t>(raysniff::kQueueSizeDefaultKb) * 1024);
+    if (!queue) {
+        object_error(nullptr, "ray.sniff~: can't allocate the queue");
+        return nullptr;
+    }
+
+    auto* x = static_cast<t_raysniff*>(object_alloc(raysniff_class));
+    if (!x) return nullptr;
+
+    x->engine       = new Engine(std::move(queue));
+    x->deferred     = new DeferredCalls;
+    x->polled_dsp   = false;
+    x->polled_state = raysniff::CaptureState::stopped;
+    x->bitdepth     = kDefaultBitdepth;
+    x->device       = gensym("");
+    x->filter       = gensym("");
+    x->queuesize    = raysniff::kQueueSizeDefaultKb;
+
+    dsp_setup(&x->ob, 0);
+    x->dumpout = outlet_new(x, nullptr);  // right outlet (created first)
+    object_obex_store(x, gensym("dumpout"), static_cast<t_object*>(x->dumpout));  // replies to getbitdepth etc.
+    outlet_new(x, "signal");              // left outlet
+
+    x->update_qelem   = qelem_new(x, (method)raysniff_update);
+    x->deferred_qelem = qelem_new(x, (method)raysniff_run_deferred);
+    x->poll_clock     = clock_new(x, (method)raysniff_poll);
+
+    // The object is always created; nothing is opened here (design.md 7.4).
+    apply_legacy_arguments(x, attr_args_offset(static_cast<short>(argc), argv), argv);
+    attr_args_process(x, static_cast<short>(argc), argv);
+    report_lock(x);
+
+    clock_fdelay(x->poll_clock, kPollIntervalMs);
+    return x;
+}
+
+static void raysniff_free(t_raysniff* x) {
+    dsp_free(&x->ob);  // perform64 is no longer called
+    if (x->poll_clock) {
+        clock_unset(x->poll_clock);
+        object_free(x->poll_clock);
+    }
+    if (x->update_qelem)   qelem_free(x->update_qelem);
+    if (x->deferred_qelem) qelem_free(x->deferred_qelem);  // drops calls not run yet
+    delete x->engine;   // stops the capture thread, then frees the queue
+    delete x->deferred; // after qelem_free: nothing takes from it any more
+}
+
+void ext_main(void*) {
+    t_class* c = class_new("ray.sniff~", (method)raysniff_new, (method)raysniff_free,
+                           sizeof(t_raysniff), nullptr, A_GIMME, 0);
+
+    class_addmethod(c, (method)raysniff_int,        "int",        A_LONG, 0);
+    class_addmethod(c, (method)raysniff_clear,      "clear",      0);
+    class_addmethod(c, (method)raysniff_stats,      "stats",      0);
+    class_addmethod(c, (method)raysniff_resetstats, "resetstats", 0);
+    class_addmethod(c, (method)raysniff_size,       "size",       0);
+    class_addmethod(c, (method)raysniff_dsp64,      "dsp64",      A_CANT, 0);
+    class_addmethod(c, (method)raysniff_assist,     "assist",     A_CANT, 0);
+    class_addmethod(c, (method)object_obex_dumpout, "dumpout",    A_CANT, 0);
+
+    // Choices shown in the inspector.
+    constexpr const char* kBitdepthChoices = "8 16 24 32";
+    // Powers of two from raysniff::kQueueSizeMinKb to raysniff::kQueueSizeMaxKb.
+    constexpr const char* kQueueSizeChoicesKb =
+        "128 256 512 1024 2048 4096 8192 16384 32768 65536 131072 262144 524288 1048576";
+
+    CLASS_ATTR_LONG     (c, "bitdepth", 0, t_raysniff, bitdepth);
+    CLASS_ATTR_ACCESSORS(c, "bitdepth", nullptr, raysniff_set_bitdepth);
+    CLASS_ATTR_ENUM     (c, "bitdepth", 0, kBitdepthChoices);
+    CLASS_ATTR_LABEL    (c, "bitdepth", 0, "Bit Depth");
+
+    CLASS_ATTR_SYM      (c, "device", 0, t_raysniff, device);
+    CLASS_ATTR_ACCESSORS(c, "device", nullptr, raysniff_set_device);
+    CLASS_ATTR_LABEL    (c, "device", 0, "Device (empty: automatic)");
+
+    CLASS_ATTR_SYM      (c, "filter", 0, t_raysniff, filter);
+    CLASS_ATTR_ACCESSORS(c, "filter", nullptr, raysniff_set_filter);
+    CLASS_ATTR_LABEL    (c, "filter", 0, "BPF Filter");
+
+    CLASS_ATTR_LONG     (c, "queuesize", 0, t_raysniff, queuesize);
+    CLASS_ATTR_ACCESSORS(c, "queuesize", nullptr, raysniff_set_queuesize);
+    CLASS_ATTR_ENUM     (c, "queuesize", 0, kQueueSizeChoicesKb);
+    CLASS_ATTR_LABEL    (c, "queuesize", 0, "Queue Size (KB)");
+
+    class_dspinit(c);
+    class_register(CLASS_BOX, c);
+    raysniff_class = c;
 }

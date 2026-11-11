@@ -18,6 +18,8 @@ add_executable(raysniff_tests
   test_pcap_source.cpp
   test_capture_session.cpp
   test_live_capture.cpp
+  test_sample_reader.cpp
+  test_capture_gate.cpp
   pcap_file.cpp
 )
 target_link_libraries(raysniff_tests PRIVATE raysniff_core Catch2::Catch2WithMain)

@@ -43,8 +43,9 @@ TSan と ASan は同時に使えないので、ビルドディレクトリを分
   - `drop_counter`：pcap の取りこぼしの累計
   - `capture_thread`：キャプチャスレッド（pcap → キュー）
   - `capture_session`：Max オブジェクトから使う窓口（開く・閉じる・デバイスやフィルタの変更）
-- `source/ray.sniff~/ray.sniff~.cpp`：Max オブジェクト（引数、attribute、DSP、メッセージ）
-- `source/ray.sniff~/packet_capture.{h,cpp}`：**前の段階のコード**。手順 5 で消し、external を `raysniff_core` につなぐ
+  - `capture_gate`：「DSP が ON」かつ「`int` が正」で開閉を決める状態機械。失敗したら次のきっかけまで開き直さない
+  - `sample_reader`：オーディオスレッドの変換（キューのバイト列 → サンプル）
+- `source/ray.sniff~/ray.sniff~.cpp`：Max オブジェクト（引数、attribute、DSP、メッセージ）。`raysniff_core` をつなぐだけの薄い層にする
 - `tests/`：Catch2 の単体テスト。`pcap_file.{h,cpp}` はテスト用の `.pcap` をその場で作る補助、`read_all.h` はリングやキューの中身をすべて読み出す補助。`test_live_capture.cpp` は `[live]` タグの実デバイスのテスト
 - `max-sdk-base/`：submodule。編集しない
 - `help/`：ヘルプのパッチ

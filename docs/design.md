@@ -270,6 +270,7 @@ sequenceDiagram
 [ray.sniff~ <bitdepth> [device] [ip netmask] [filter ...] @attr value ...]
 ```
 - `bitdepth` だけを位置で指定する引数として正式に扱う
+- **`bitdepth` がない・正しくないとき（決定）**：エラーを表示し、**既定値 16 でオブジェクトを作る**。オブジェクトは常に作られる（7.4）ようにし、`@bitdepth` で後から直せるようにするため。16 は `@queuesize` の既定値の目安（16bit・48kHz で約 10 秒分）とも合う
 - 旧形式の位置指定の引数（`device ip netmask filter...`）も**互換性のために読む**
   - `device` → `@device`、`filter...` → `@filter` として扱う
   - `ip` と `netmask` は**読み捨てる**。ip は使われておらず、netmask は `ip broadcast` のときだけ使うもので、しかもバイト順が正しくなかった
@@ -278,7 +279,7 @@ sequenceDiagram
 ### 7.2 attribute
 | attribute | 型 | 動作中の変更 | 方法 / 失敗したとき | 状態 |
 |---|---|---|---|---|
-| `@bitdepth` | int（8/16/24/32） | **できる。すぐに反映** | オーディオスレッドが読む atomic な値。作業用のバッファは最大の 4 バイト分を確保しておく。不正な値は拒否 | **決定** |
+| `@bitdepth` | int（8/16/24/32） | **できる。すぐに反映** | オーディオスレッドがブロックの先頭で読む atomic な値（作業用のバッファは使わないので、確保し直しは起きない）。不正な値は拒否 | **決定** |
 | `@device` | symbol | **できる** | キャプチャスレッドを止めて開き直す。失敗したら元のデバイスのまま。キューの中身は残す | **決定** |
 | `@filter` | 複数の atom（連結して BPF の式にする） | **できる** | キャプチャスレッドを止めて `pcap_setfilter` を呼び、再開する。失敗したら元のフィルタのまま | **決定** |
 | `@queuesize` | int | **DSP とキャプチャの両方が止まっているときだけ** | それ以外のときは警告を出して無視 | **決定**（条件） |
@@ -312,6 +313,9 @@ sequenceDiagram
   - DSP の ON/OFF を知らせる公式のコールバックはない。`dspchain_addmixerlistener` は文書化されておらず、登録を解除する API もないので使わない
   - `dsp64` が呼ばれたら次の確認を前倒しする、という組み合わせは任意
 - エラーは、開こうとしたときに 1 回だけ表示する（ポーリングのたびに繰り返さない）
+- **開けなかったとき（決定）**：エラーを 1 回表示し、**次のきっかけまで開き直さない**。きっかけは、`int` を送り直す（0 以下を経なくても、正の数を受け取ったら）、DSP を入れ直す、`@device` を変える、`@filter` を変える、のどれか
+- **動いている途中でキャプチャスレッドが失敗したとき（決定）**：（USB の Ethernet アダプタを抜いた、など）エラーを 1 回表示して閉じる。開き直すきっかけは上と同じ
+- この判断は Max に依存しない状態機械（`source/core/capture_gate.h`）にまとめ、単体テストで確かめる
 
 ### 7.5 stats（**決定**：キューと pcap の取りこぼしを出す）
 | 項目 | 取得する場所 | 備考 |
@@ -345,7 +349,9 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 ### 7.6 信号への変換（**決定**：元の挙動を維持）
 - 1 サンプルごとに `bitdepth / 8` バイトを読み、リトルエンディアンで組み立てる（1 バイト目が最下位）
 - `value == 0 ? 0 : -(value - peak) / peak`。`peak = 2^(bitdepth-1)`
-- キューが空になったら、足りないバイトは 0 で埋める
+- キューが空になったら、足りないサンプルは 0 にする
+- **1 サンプル分に足りない端数のバイト（決定）**：読まずにキューに残し、次のブロックで使う（例：16 bit で残り 1 バイトなら、そのバイトは次のブロックの最初のサンプルになる）。バイト列の途中に 0 を挟まないので、届いたデータがそのまま音になる
+- 変換は Max に依存しない関数（`source/core/sample_reader.h`）にまとめ、単体テストで確かめる。`ByteRing` から 1 バイトずつ直接読む（作業用のバッファは使わない。4 章③）
 
 ---
 
@@ -377,7 +383,17 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 | 2 | テストの土台（Catch2、`RAYSNIFF_BUILD_TESTS`、`RAYSNIFF_SANITIZER`） | 完了 |
 | 3 | キュー（`source/core/`：`locked_memory`、`byte_ring`、`packet_queue`） | 完了。通常・TSan・ASan でテストが通る |
 | 4 | キャプチャ部分（`source/core/` のみ。構成は 5 章。external はまだつながない） | 完了。通常・TSan・ASan でテストが通る。`lo0` での実機のキャプチャも `[live]` のテストで確認済み（2026-11-11、root で実行） |
-| 5 | Max オブジェクト（状態機械、attribute、ポーリング、dumpout） | 未着手 |
+| 5 | Max オブジェクト（状態機械、attribute、ポーリング、dumpout） | 完了。`capture_gate` と `sample_reader` は通常・TSan・ASan でテストが通る。external は Universal でビルドできる。Max の中での確認は手順 6 で行う |
 | 6 | README の更新、Max 上での確認 | 未着手 |
 
-`source/ray.sniff~/packet_capture.{h,cpp}` と `ray.sniff~.cpp` は、この設計の**前の段階**のコード（mutex と deque、古いものから自動で捨てる処理、作るときに pcap を開く処理、500 MB の指定）。**手順 5 で**置き換え、そのときに external に `raysniff_core` をリンクする（**決定**。それまでは `PacketQueue` という同じ名前のクラスがぶつかるのでリンクしない）。手順 4 では external を触らない。
+手順 5 で、前の段階のコード（`packet_capture.{h,cpp}`：mutex と deque、古いものから自動で捨てる処理、作るときに pcap を開く処理、500 MB の指定）を消し、external に `raysniff_core` をリンクした。
+
+**Max オブジェクトのスレッドの扱い（決定）**：メッセージ（`int`、`stats`、`resetstats`）と attribute（`@device`、`@filter`、`@queuesize`）は、メインスレッド以外（metro からのスケジューラスレッドなど）で届いたら、メインスレッドに回す。`CaptureSession`、`CaptureGate`、stats の基準値はメインスレッドしか触らない、という前提を保つため。
+  - 回し方は `defer_low` ではなく **qelem**（決定）。呼び出し（名前と atom のコピー）を mutex で守った配列に積み、qelem で起こしたメインスレッドが届いた順に実行する。`defer_low` は、実行される前にオブジェクトが削除されると解放済みのオブジェクトで呼ばれるおそれがあるが、`qelem_free` はまだ実行されていない呼び出しを取り消す。mutex はスケジューラスレッドとメインスレッドだけが取り、オーディオスレッドは取らない
+  - 受け渡しはクラス **`DeferredCalls`**（決定）にまとめる。mutex と配列は private にし、`push()`（積む）と `take()`（中身を丸ごと取り出す）だけを公開する。ロックを取るのはこのクラスの中だけになる
+  - **`t_raysniff` の C++ 部分の分け方（決定）**：`t_raysniff` は `object_alloc` で確保され、C++ のコンストラクタとデストラクタが呼ばれない。そのため、C++ のオブジェクトは `new` / `delete` で別に持つ。責務ごとに 2 つに分ける
+    - `Engine`：キャプチャから音声まで（`queue`、`ring`、`bytes_per_sample`、`session`、`gate`）。Max の型を使わない
+    - `DeferredCalls`：メインスレッドへの受け渡し。`t_atom` などの Max の型を使う
+    - スケジューラの前回の観測値（`polled_dsp`、`polled_state`）は `bool` と enum だけなので、`t_raysniff` の `poll_clock` の隣に置き、`raysniff_new` で初期化する
+  - **手順 6 で確かめること**：Overdrive が ON のとき、スケジューラスレッドの `clock`（ポーリング）とメインスレッドの `raysniff_free` が同時に動いても問題ないか。SDK の例にならい、`free` で `clock_unset` と `object_free` をするだけにしている
+`clear`（atomic なフラグを立てるだけ）、`size`（未読のバイト数を読むだけ）、`@bitdepth`（atomic に書くだけ）は、どのスレッドからでもそのまま処理する

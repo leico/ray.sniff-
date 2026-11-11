@@ -2,5 +2,6 @@ set_property(DIRECTORY PROPERTY max::external YES)
 set_property(DIRECTORY PROPERTY max::glob ON)
 project(ray.sniff_tilde)
 
-# libpcap bundled with macOS (/usr/lib/libpcap.A.dylib, x86_64 + arm64e)
-target_link_libraries(${PROJECT_NAME} PRIVATE pcap)
+# Queue, capture and sample conversion (source/core/, also linked by the
+# tests). It brings libpcap from macOS and the thread library with it.
+target_link_libraries(${PROJECT_NAME} PRIVATE raysniff_core)
