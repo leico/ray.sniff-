@@ -395,7 +395,7 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 手順 5 で、前の段階のコード（`packet_capture.{h,cpp}`：mutex と deque、古いものから自動で捨てる処理、作るときに pcap を開く処理、500 MB の指定）を消し、external に `raysniff_core` をリンクした。
 
 **Max オブジェクトのスレッドの扱い（決定）**：メッセージ（`int`、`clear`、`stats`、`resetstats`、`size`）と attribute（`@device`、`@filter`、`@queuesize`）は、メインスレッド以外（metro からのスケジューラスレッドなど）で届いたら、メインスレッドに回す。`CaptureSession`、`CaptureGate`、stats の基準値、`Engine::ring`（`@queuesize` で差し替わるリングを指すポインタ）はメインスレッドしか触らない、という前提を保つため。
-  - 回し方は `defer_low` ではなく **qelem**（決定）。呼び出し（名前と atom のコピー）を mutex で守った配列に積み、qelem で起こしたメインスレッドが届いた順に実行する。`defer_low` は、実行される前にオブジェクトが削除されると解放済みのオブジェクトで呼ばれるおそれがあるが、`qelem_free` はまだ実行されていない呼び出しを取り消す。mutex はスケジューラスレッドとメインスレッドだけが取り、オーディオスレッドは取らない
+  - 回し方は `defer_low` ではなく **qelem**（決定）。呼び出し（名前と atom のコピー）を mutex で守った配列に積み、qelem で起こしたメインスレッドが届いた順に実行する。`defer_low` は、実行される前にオブジェクトが削除されると解放済みのオブジェクトで呼ばれるおそれがあるが、`qelem_free` はまだ実行されていない呼び出しを取り消す。mutex を取るのはスケジューラスレッドとメインスレッド（SIAI が ON のときはオーディオスレッドも。下の SIAI の項を参照）。`perform64` は取らない
   - 受け渡しはクラス **`DeferredCalls`**（決定）にまとめる。mutex と配列は private にし、`push()`（積む）と `take()`（中身を丸ごと取り出す）だけを公開する。ロックを取るのはこのクラスの中だけになる
   - **`t_raysniff` の C++ 部分の分け方（決定）**：`t_raysniff` は `object_alloc` で確保され、C++ のコンストラクタとデストラクタが呼ばれない。そのため、C++ のオブジェクトは `new` / `delete` で別に持つ。責務ごとに 2 つに分ける
     - `Engine`：キャプチャから音声まで（`queue`、`ring`、`bytes_per_sample`、`session`、`gate`）。Max の型を使わない

@@ -51,8 +51,10 @@ struct DeferredCall {
 };
 
 // Calls handed from other threads to the main thread. push() from any thread
-// except the audio thread, take() on the main thread; the lock is held only
-// inside these two. The audio thread never takes it.
+// other than the main one, take() on the main thread; the lock is held only
+// inside these two. With Scheduler in Audio Interrupt on, push() also runs on
+// the audio thread when a message arrives there, and briefly locks and
+// allocates (accepted, design.md). perform64 never takes the lock.
 class DeferredCalls {
 public:
     void push(DeferredCall call) {
