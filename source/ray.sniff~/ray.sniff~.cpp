@@ -10,8 +10,9 @@
 //   audio      perform64: reads the queue (its only reader)
 //   capture    inside CaptureSession: writes the queue (its only writer)
 // Messages and attribute changes that arrive on another thread are deferred
-// to the main thread, so the session, the gate and the stats baselines are
-// only touched there.
+// to the main thread, so the session, the gate, the stats baselines and the
+// ring pointer (replaced by @queuesize) are only touched there. Only
+// @bitdepth is handled on any thread (an atomic store).
 
 #include "capture_gate.h"
 #include "capture_session.h"
@@ -258,8 +259,11 @@ static void raysniff_int(t_raysniff* x, long n) {
     raysniff_update(x);
 }
 
+// clear and size go to the main thread too: @queuesize replaces the ring
+// there, so another thread could otherwise reach a ring that was just freed.
 static void raysniff_clear(t_raysniff* x) {
-    x->engine->ring->request_clear();  // any thread; the audio thread applies it
+    if (defer_call(x, DeferredKind::message, "clear", 0, nullptr)) return;
+    x->engine->ring->request_clear();  // the audio thread applies it at its next block
 }
 
 static void raysniff_stats(t_raysniff* x) {
@@ -286,6 +290,7 @@ static void raysniff_resetstats(t_raysniff* x) {
 
 // Deprecated: use `stats` (queue size). Kept for old patches.
 static void raysniff_size(t_raysniff* x) {
+    if (defer_call(x, DeferredKind::message, "size", 0, nullptr)) return;
     t_atom a;
     atom_setlong(&a, static_cast<t_atom_long>(x->engine->ring->unread_bytes()));
     outlet_anything(x->dumpout, gensym("size"), 1, &a);
