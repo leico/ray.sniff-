@@ -289,9 +289,14 @@ sequenceDiagram
 - **決定**：2 のべき乗でない値が入力されたら、**attribute の値そのものを切り上げた値に書き換える**（インスペクタや `getqueuesize` でも切り上げ後の値が見える）
 - **決定**：インスペクタと `attrui` には、2 のべき乗の値（128〜1048576 の 14 通り）をプルダウンメニューとして表示する（`CLASS_ATTR_ENUM`）。ENUM は見せ方を変えるだけで、値は制限しない。数値の入力欄だと、ドラッグしたときに途中の値ごとに確保し直しと `mlock`、コンソールへの表示が起きてしまうため。`CLASS_ATTR_ENUMINDEX` は使わない（値が KB ではなく番号になり、`@queuesize 1024` と書けなくなるため）。メニューはインスペクタでの入力補助で、オブジェクトの箱やメッセージでは任意の値を受け付けて切り上げる
 - **決定**：**最小は 128 KB**（1 パケットが最大 64 KB のため）。**範囲外の値は最小値・最大値に丸める**
+- **決定（仕様とする）**：DSP を OFF にした直後は、キャプチャが閉じるまで（ポーリングの間隔で最大 100 ms ほど）`@queuesize` の変更が警告とともに断られることがある。少し待って送り直せば通る。Max 9 で確認（2026-11-11）
 - **決定**：**既定値は 1 MB**（16bit・48kHz で約 10 秒分）
 - **決定**：オブジェクトの引数（`@queuesize`）でもメッセージでも指定できる（引数での指定は禁止しない）。2 のべき乗でない値や範囲外の値も受け付け、2 のべき乗に切り上げて範囲内に丸めたうえで、**丸めたことをコンソールに表示する**（例：`ray.sniff~: queuesize 1000 KB -> 1024 KB`）
 - 実装上の注意：記憶領域は `mmap` と `mlock` で確保する（4 章の③）。確保に失敗したら、エラーを表示して元の大きさのままにする
+
+`@filter` の細かい仕様
+- **決定**：受け取った atom を空白でつないだ 1 つのシンボルとして持つ（`CLASS_ATTR_SYM`）。そのため、インスペクタや `getfilter` では `"tcp port 80"` のように引用符付きで表示される（空白を含むシンボルの、Max の普通の表記。Max 9 で確認、2026-11-11）。保存して読み込み直しても、そのまま送り返しても元に戻る
+  - atom のリスト（`CLASS_ATTR_ATOM_VARSIZE`）で持てば引用符なしで表示できるが、採らない。`t_raysniff` に固定長の配列を持つことになり、フィルタの長さ（atom の数）に上限ができるため
 
 ### 7.3 メッセージ
 | メッセージ | 動作 | 状態 |
@@ -370,8 +375,9 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 
 ## 9. 未決定・TODO
 
-- [ ] ヘルプファイルの更新。`glitch $1` は現在のソースに実装がない。`clear` は再実装する
-- [ ] 実際にキャプチャして動作確認する（ChmodBPF を入れた環境か root 権限で）。Max 上での動作確認
+- [x] ヘルプファイルの更新。`glitch $1` は現在のソースに実装がない。`clear` は再実装する
+  - 作り直した（2026-11-12、英語、タブ 4 つ：基本の使い方・stats・引数と attribute・権限）。見た目は Max 上で手直し済み。今後は Max で編集したファイルを正とする
+- [x] 実際にキャプチャして動作確認する（ChmodBPF を入れた環境か root 権限で）。Max 上での動作確認（2026-11-11、Max 9。10 章の手順 6）
 
 ## 10. 実装の現状
 
@@ -384,7 +390,7 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 | 3 | キュー（`source/core/`：`locked_memory`、`byte_ring`、`packet_queue`） | 完了。通常・TSan・ASan でテストが通る |
 | 4 | キャプチャ部分（`source/core/` のみ。構成は 5 章。external はまだつながない） | 完了。通常・TSan・ASan でテストが通る。`lo0` での実機のキャプチャも `[live]` のテストで確認済み（2026-11-11、root で実行） |
 | 5 | Max オブジェクト（状態機械、attribute、ポーリング、dumpout） | 完了。`capture_gate` と `sample_reader` は通常・TSan・ASan でテストが通る。external は Universal でビルドできる。Max の中での確認は手順 6 で行う |
-| 6 | README の更新、Max 上での確認 | 未着手 |
+| 6 | README の更新、Max 上での確認 | 完了。Max 9 での確認（2026-11-11）：読み込みと基本動作（音が出る、権限がないときの案内）、attribute とメッセージ、旧形式の引数は確認済み。metro から送ったメッセージと attribute は、Overdrive の ON・OFF のどちらでも動いた。Overdrive が ON のまま削除しても落ちない。`@filter` の表示（引用符付き）と、DSP を OFF にした直後の `@queuesize`（断られることがある）は仕様とした。ヘルプパッチを作り直し、README を今の仕様に合わせた（2026-11-12）。README の Concept に、暗号化された Web とローカルな通信についての段落を足した。テスト用のビルド（`RAYSNIFF_BUILD_TESTS=ON`）は external を作らないようにした（arm64 だけのビルドが Universal 版を上書きしていたため） |
 
 手順 5 で、前の段階のコード（`packet_capture.{h,cpp}`：mutex と deque、古いものから自動で捨てる処理、作るときに pcap を開く処理、500 MB の指定）を消し、external に `raysniff_core` をリンクした。
 
@@ -395,5 +401,5 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
     - `Engine`：キャプチャから音声まで（`queue`、`ring`、`bytes_per_sample`、`session`、`gate`）。Max の型を使わない
     - `DeferredCalls`：メインスレッドへの受け渡し。`t_atom` などの Max の型を使う
     - スケジューラの前回の観測値（`polled_dsp`、`polled_state`）は `bool` と enum だけなので、`t_raysniff` の `poll_clock` の隣に置き、`raysniff_new` で初期化する
-  - **手順 6 で確かめること**：Overdrive が ON のとき、スケジューラスレッドの `clock`（ポーリング）とメインスレッドの `raysniff_free` が同時に動いても問題ないか。SDK の例にならい、`free` で `clock_unset` と `object_free` をするだけにしている
+  - Overdrive が ON のとき、スケジューラスレッドの `clock`（ポーリング）とメインスレッドの `raysniff_free` が同時に動いても問題ないか：SDK の例にならい、`free` で `clock_unset` と `object_free` をするだけにしている。**Max 9 で確認済み（2026-11-11）**：Overdrive を ON にして metro でメッセージと attribute を送り続けたまま、オブジェクトの削除とパッチを閉じる操作を繰り返しても落ちなかった
 `clear`（atomic なフラグを立てるだけ）、`size`（未読のバイト数を読むだけ）、`@bitdepth`（atomic に書くだけ）は、どのスレッドからでもそのまま処理する

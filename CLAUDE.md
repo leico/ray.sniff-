@@ -29,7 +29,7 @@ cmake --build build-thread -j --target raysniff_tests && ./build-thread/tests/ra
 sudo ./build-test/tests/raysniff_tests "[live]"
 ```
 
-TSan と ASan は同時に使えないので、ビルドディレクトリを分ける。`[live]` のテストは人が `sudo` で動かす（Claude の環境では権限がなく SKIP になる）。
+TSan と ASan は同時に使えないので、ビルドディレクトリを分ける。`RAYSNIFF_BUILD_TESTS=ON` のビルドはテストだけを作り、external は作らない（external はソースツリーの `externals/` に書き出されるので、arm64 だけのテスト用のビルドが Universal 版を上書きしてしまうため）。`[live]` のテストは人が `sudo` で動かす（Claude の環境では権限がなく SKIP になる）。
 
 ## 構成
 

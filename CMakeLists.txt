@@ -30,9 +30,13 @@ if(RAYSNIFF_SANITIZER)
 endif()
 
 add_subdirectory(source/core)
-add_subdirectory("source/ray.sniff~")
 
+# A test build makes only the tests. The external is written to externals/ in
+# the source tree, so a test build (often arm64 only, or with a sanitizer)
+# would overwrite the Universal one made by the normal build.
 if(RAYSNIFF_BUILD_TESTS)
   enable_testing()
   add_subdirectory(tests)
+else()
+  add_subdirectory("source/ray.sniff~")
 endif()
