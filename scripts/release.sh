@@ -2,18 +2,23 @@
 # Builds ray.sniff~, signs it with a Developer ID, notarizes and staples it,
 # and packs the Max package into dist/ray.sniff-<version>-macos.zip.
 #
-# Usage:
-#   RAYSNIFF_SIGN_IDENTITY=<SHA-1 hash or full identity name> \
-#   RAYSNIFF_NOTARY_PROFILE=<notarytool keychain profile> \
-#   scripts/release.sh [--check]
+# Usage: scripts/release.sh [--check]
+#   --check  runs only the checks and stops before building
+#            (tests/release_script_test.sh uses it)
 #
-# --check runs only the checks below and stops before building
-# (tests/release_script_test.sh uses it).
+# Settings are read ONLY from scripts/release.local.env (not tracked by git;
+# copy scripts/release.local.env.example). Environment variables are ignored,
+# so a value left in the shell can't pick another identity.
+#   RAYSNIFF_TEAM_ID             Team ID to sign with (10 characters)
+#   RAYSNIFF_NOTARY_PROFILE      notarytool keychain profile
+#                                (xcrun notarytool store-credentials)
+#   RAYSNIFF_FORBIDDEN_TEAM_IDS  Team IDs that must never be used, separated
+#                                by spaces (e.g. an employer's), optional
 #
-# Both must be given explicitly: the keychain may hold more than one
-# "Developer ID Application" identity (design.md 9).
-#   security find-identity -v -p codesigning   lists the identities
-#   xcrun notarytool store-credentials          creates a profile
+# The signing identity is the one "Developer ID Application" identity of
+# RAYSNIFF_TEAM_ID in the keychain; anything else stops the script. Before
+# building, it shows that identity and asks for "y". After signing, it checks
+# the Team ID the signature actually carries (design.md 9).
 #
 # The version is read from package-info.json. Nothing is uploaded.
 
@@ -31,48 +36,99 @@ esac
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 cd "$ROOT"
 
-IDENTITY=${RAYSNIFF_SIGN_IDENTITY:-}
-PROFILE=${RAYSNIFF_NOTARY_PROFILE:-}
-[[ -n "$IDENTITY" ]] || die "set RAYSNIFF_SIGN_IDENTITY (SHA-1 hash or full name of a Developer ID Application identity)"
-[[ -n "$PROFILE" ]] || die "set RAYSNIFF_NOTARY_PROFILE (a notarytool keychain profile)"
+# --- settings ---------------------------------------------------------------
 
-# The identity must match exactly one Developer ID Application identity.
-matches=$(security find-identity -v -p codesigning | grep "Developer ID Application" | grep -cF -- "$IDENTITY" || true)
-[[ "$matches" == 1 ]] || die "RAYSNIFF_SIGN_IDENTITY matches $matches Developer ID Application identities (need exactly 1)"
+CONFIG="scripts/release.local.env"
+[[ -f "$CONFIG" ]] || die "$CONFIG not found (copy scripts/release.local.env.example and fill it in)"
+
+# Reads KEY=value from the config without running it as shell code. Quotes
+# around the value are removed. Prints nothing if the key is missing.
+config() {
+    sed -nE "s/^[[:space:]]*$1[[:space:]]*=[[:space:]]*\"?([^\"#]*)\"?[[:space:]]*(#.*)?$/\1/p" "$CONFIG" \
+        | tail -1 | sed -E 's/[[:space:]]+$//'
+}
+
+TEAM_ID=$(config RAYSNIFF_TEAM_ID)
+PROFILE=$(config RAYSNIFF_NOTARY_PROFILE)
+FORBIDDEN=$(config RAYSNIFF_FORBIDDEN_TEAM_IDS)
+
+[[ -n "$TEAM_ID" ]] || die "set RAYSNIFF_TEAM_ID in $CONFIG"
+[[ "$TEAM_ID" =~ ^[A-Z0-9]{10}$ ]] || die "RAYSNIFF_TEAM_ID must be 10 capital letters or digits: $TEAM_ID"
+[[ -n "$PROFILE" ]] || die "set RAYSNIFF_NOTARY_PROFILE in $CONFIG"
+
+is_forbidden() {
+    local id
+    for id in $FORBIDDEN; do
+        [[ "$id" == "$1" ]] && return 0
+    done
+    return 1
+}
+is_forbidden "$TEAM_ID" && die "RAYSNIFF_TEAM_ID $TEAM_ID is in RAYSNIFF_FORBIDDEN_TEAM_IDS"
+
+# --- signing identity -------------------------------------------------------
+
+# Lines look like:  2) <40 hex> "Developer ID Application: <name> (<team>)"
+identities=$(security find-identity -v -p codesigning)
+selected=$(printf '%s\n' "$identities" \
+    | sed -nE "s/^[[:space:]]*[0-9]+\)[[:space:]]+([0-9A-F]{40})[[:space:]]+\"(Developer ID Application: .* \\($TEAM_ID\\))\"$/\1 \2/p")
+count=$(printf '%s' "$selected" | grep -c . || true)
+[[ "$count" == 1 ]] || die "found $count Developer ID Application identities for team $TEAM_ID (need exactly 1)"
+IDENTITY=${selected%% *}     # SHA-1 hash
+IDENTITY_NAME=${selected#* }
+
+# --- repository -------------------------------------------------------------
 
 VERSION=$(python3 -I -c 'import json; print(json.load(open("package-info.json"))["version"])')
 CMAKE_VERSION=$(sed -nE 's/^ *VERSION ([0-9.]+).*/\1/p' CMakeLists.txt | head -1)
 [[ "$VERSION" == "$CMAKE_VERSION" ]] || die "package-info.json ($VERSION) and CMakeLists.txt ($CMAKE_VERSION) disagree"
 
-[[ -z "$(git status --porcelain)" ]] || die "the working tree has uncommitted changes"
+changes=$(git status --porcelain)   # a failing git stops the script here
+[[ -z "$changes" ]] || die "the working tree has uncommitted changes"
+
+echo "version:  $VERSION"
+echo "identity: $IDENTITY_NAME"
+echo "profile:  $PROFILE"
 
 if [[ "$CHECK_ONLY" == 1 ]]; then
-    echo "checks passed (version $VERSION)"
+    echo "checks passed"
     exit 0
 fi
+
+read -r -p "Sign and notarize with this identity? [y/N] " answer || answer=""
+[[ "$answer" == y || "$answer" == Y ]] || die "cancelled"
 
 BUNDLE="externals/ray.sniff~.mxo"
 DIST="dist"
 STAGE="$DIST/ray.sniff"
 ZIP="$DIST/ray.sniff-$VERSION-macos.zip"
 
+# --- build ------------------------------------------------------------------
+
 echo "==> build (Release, Universal)"
-rm -rf "$BUNDLE"
+rm -rf "$BUNDLE" build-release   # no settings left from an earlier configure
 cmake -B build-release -DCMAKE_BUILD_TYPE=Release >/dev/null
 cmake --build build-release -j
 archs=$(lipo -archs "$BUNDLE/Contents/MacOS/ray.sniff~")
 [[ "$archs" == *x86_64* && "$archs" == *arm64* ]] || die "not a Universal Binary: $archs"
 
+# --- sign -------------------------------------------------------------------
+
 echo "==> sign"
 codesign --force --options runtime --timestamp --sign "$IDENTITY" "$BUNDLE"
 codesign --verify --strict --verbose=2 "$BUNDLE"
+signed_team=$(codesign -dv "$BUNDLE" 2>&1 | sed -n 's/^TeamIdentifier=//p')
+[[ "$signed_team" == "$TEAM_ID" ]] || die "signed with team '$signed_team', expected $TEAM_ID"
+is_forbidden "$signed_team" && die "signed with forbidden team $signed_team"
+
+# --- notarize ---------------------------------------------------------------
 
 echo "==> notarize (this waits for Apple)"
 rm -rf "$DIST"
 mkdir -p "$DIST"
 ditto -c -k --keepParent "$BUNDLE" "$DIST/notarize.zip"
 xcrun notarytool submit "$DIST/notarize.zip" --keychain-profile "$PROFILE" --wait \
-    --output-format json > "$DIST/notarize.json"
+    --output-format json > "$DIST/notarize.json" \
+    || die "notarytool submit failed (see the message above and $DIST/notarize.json)"
 status=$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["status"])' "$DIST/notarize.json")
 if [[ "$status" != "Accepted" ]]; then
     id=$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["id"])' "$DIST/notarize.json")
@@ -81,16 +137,28 @@ if [[ "$status" != "Accepted" ]]; then
 fi
 rm "$DIST/notarize.zip"
 
+# --- staple -----------------------------------------------------------------
+
 echo "==> staple"
 xcrun stapler staple "$BUNDLE"
 xcrun stapler validate "$BUNDLE"
 
+# --- package ----------------------------------------------------------------
+
 echo "==> package"
-mkdir -p "$STAGE"
+mkdir -p "$STAGE/externals"
 ditto "$BUNDLE" "$STAGE/$BUNDLE"
-ditto help "$STAGE/help"
-cp README.md LICENSE package-info.json "$STAGE/"
-ditto -c -k --keepParent "$STAGE" "$ZIP"
+# Only files tracked by git (no .DS_Store or other local files).
+git ls-files -z help README.md LICENSE package-info.json \
+    | while IFS= read -r -d '' file; do
+          mkdir -p "$STAGE/$(dirname "$file")"
+          cp "$file" "$STAGE/$file"
+      done
+# No extended attributes: they would become ._* files in the zip.
+ditto -c -k --norsrc --noextattr --keepParent "$STAGE" "$ZIP"
+if unzip -Z1 "$ZIP" | grep -E '(^|/)(\._|\.DS_Store$)'; then
+    die "the zip contains the files above"
+fi
 
 echo
 echo "done: $ZIP"

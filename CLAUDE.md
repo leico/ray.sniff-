@@ -29,7 +29,7 @@ cmake --build build-thread -j --target raysniff_tests && ./build-thread/tests/ra
 sudo ./build-test/tests/raysniff_tests "[live]"
 ```
 
-リリース用スクリプト（`scripts/release.sh`）の事前チェックのテストは `tests/release_script_test.sh`（bash だけで動き、`security` と `git` を偽物に差し替える。ビルド・署名・公証はしない）。スクリプトを変えたら実行する。
+リリース用スクリプト（`scripts/release.sh`）の事前チェックのテストは `tests/release_script_test.sh`（bash だけで動き、`security` と `git` を偽物に差し替える。ビルド・署名・公証はしない）。スクリプトを変えたら実行する。スクリプトの設定は `scripts/release.local.env`（git で管理しない）だけから読む。
 
 TSan と ASan は同時に使えないので、ビルドディレクトリを分ける。`RAYSNIFF_BUILD_TESTS=ON` のビルドはテストだけを作り、external は作らない（external はソースツリーの `externals/` に書き出されるので、arm64 だけのテスト用のビルドが Universal 版を上書きしてしまうため）。`[live]` のテストは人が `sudo` で動かす（Claude の環境では権限がなく SKIP になる）。
 

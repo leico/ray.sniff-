@@ -4,6 +4,7 @@ build-*/
 externals/
 support/
 dist/
+scripts/release.local.env
 
 # Object files / libraries
 *.o

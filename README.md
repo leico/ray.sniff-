@@ -146,6 +146,16 @@ cmake --build build-test -j && ctest --test-dir build-test --output-on-failure
 A test build makes only the tests, not the external. Tests tagged `[live]` capture on `lo0` and are skipped without BPF permission (`sudo ./build-test/tests/raysniff_tests "[live]"`).
 Design notes (in Japanese) are in [docs/design.md](docs/design.md).
 
+## Making a release (maintainers)
+
+`scripts/release.sh` builds the external, signs it with a Developer ID, notarizes and staples it, and packs the package into `dist/ray.sniff-<version>-macos.zip`. It needs a Developer ID Application certificate in the keychain and a notarytool profile (`xcrun notarytool store-credentials`).
+
+1. Copy `scripts/release.local.env.example` to `scripts/release.local.env` (not tracked by git) and set your Team ID and notarytool profile. List Team IDs that must never be used on your machine in `RAYSNIFF_FORBIDDEN_TEAM_IDS`.
+2. `scripts/release.sh --check` shows the identity it will use.
+3. `scripts/release.sh` asks for confirmation, then does the rest. Nothing is uploaded.
+
+The settings are read only from that file, not from environment variables. `tests/release_script_test.sh` tests the checks.
+
 # Known limitations
 
 * macOS only

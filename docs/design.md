@@ -378,9 +378,14 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
 - [x] ヘルプファイルの更新。`glitch $1` は現在のソースに実装がない。`clear` は再実装する
   - 作り直した（2026-11-12、英語、タブ 4 つ：基本の使い方・stats・引数と attribute・権限）。見た目は Max 上で手直し済み。今後は Max で編集したファイルを正とする
 - [ ] **v0.2.0 のリリース（決定：公証して配る）**：GitHub Release にビルドした `.mxo` を添付する。ダウンロードしたファイルには quarantine 属性が付き、ad-hoc 署名のままでは Gatekeeper に止められるため、Developer ID で署名し直し（hardened runtime 付き）、`notarytool` で公証を受けてステープルする。Developer ID は個人で Apple Developer Program に加入して取る（2026-11-12 決定、加入待ち）
-  - 署名の identity は SHA-1 ハッシュか Team ID を含む完全な名前で明示する（キーチェーンに Developer ID Application が複数あると、名前の一部だけでは曖昧になるため）
-  - 手順は `scripts/release.sh` にまとめる（2026-11-13）。Release でビルド → Universal か確認 → `codesign --options runtime --timestamp` → `notarytool submit --wait` → `stapler staple` → Max のパッケージの形（`externals/`、`help/`、README、LICENSE、`package-info.json`）で `dist/ray.sniff-<version>-macos.zip` に固める。identity と notarytool のプロファイルは環境変数で必ず渡す（既定値は持たない）。アップロードはしない
-  - 事前チェック（identity が Developer ID Application のちょうど 1 つに一致するか、バージョンの一致、未コミットの変更）は `--check` で単独に動かせる。`tests/release_script_test.sh` が、`security` と `git` を偽物に差し替えて 10 の場面を確かめる（会社と個人の両方に一致する名前を止める、など）。公証とステープルは実際に動かして確かめるしかない
+  - 手順は `scripts/release.sh` にまとめる（2026-11-13）。Release でビルド（`build-release` は毎回作り直す）→ Universal か確認 → `codesign --options runtime --timestamp` → `notarytool submit --wait` → `stapler staple` → Max のパッケージの形（`externals/`、git で管理している `help/`・README・LICENSE・`package-info.json`）で `dist/ray.sniff-<version>-macos.zip` に固める。zip には拡張属性を入れない（`._*` のファイルになるため。`.mxo` の署名とステープルには影響しないことを確認済み）。アップロードはしない
+  - **設定と、別の名義で署名しない仕組み（決定、2026-11-13）**：公開リポジトリで、ほかの人も使うことを考える
+    - 設定は `scripts/release.local.env`（git で管理しない。ひな形は `scripts/release.local.env.example`）に書く：`RAYSNIFF_TEAM_ID`、`RAYSNIFF_NOTARY_PROFILE`、`RAYSNIFF_FORBIDDEN_TEAM_IDS`。**環境変数は読まない**（シェルに残った値で別の名義が選ばれないよう、値の出どころを 1 か所にする）。シェルのコードとしては実行せず、`KEY=value` の行だけを読む
+    - 証明書は Team ID から選ぶ：「Developer ID Application で括弧の中がその Team ID」のものが**ちょうど 1 つ**のときだけ使う。SHA-1 ハッシュは指定しない（証明書を作り直すと変わるため）
+    - `RAYSNIFF_FORBIDDEN_TEAM_IDS` に入っている Team ID は、指定されても止める（同じキーチェーンに勤め先の証明書がある場合など）。リポジトリには入らないので、その Team ID が公開されることもない
+    - ビルドの前に、選んだ証明書の名前を表示して `y` を求める。署名の後に、署名に実際に入った `TeamIdentifier` を確かめる
+    - Team ID 自体は秘密ではない（署名された `.mxo` から誰でも読める）が、人によって違うのでスクリプトには書き込まない
+  - 事前チェック（設定、証明書の選択、禁止リスト、バージョンの一致、未コミットの変更）は `--check` で単独に動かせる。`tests/release_script_test.sh` が、`security` と `git` を偽物に差し替えて 16 の場面を確かめる（禁止した Team ID を止める、環境変数の Team ID を使わない、確認で `y` 以外なら止める、など）。公証とステープルは実際に動かして確かめるしかない
   - **実際に動かして確認（2026-11-13）**：`.mxo` にもステープルできた（`stapler validate` が通る。zip から取り出した後でも通る）。署名は hardened runtime とタイムスタンプ付き。新しく加入したアカウントの最初の公証は、待ち時間が長かった
   - Max SDK の署名（`MAX_SDK_CODESIGN_IDENTITY`）は使わない。hardened runtime とタイムスタンプを付けず、identity が見つからないと黙って ad-hoc 署名になるため
 - [x] 実際にキャプチャして動作確認する（ChmodBPF を入れた環境か root 権限で）。Max 上での動作確認（2026-11-11、Max 9。10 章の手順 6）
