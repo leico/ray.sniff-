@@ -3,6 +3,7 @@ build/
 build-*/
 externals/
 support/
+dist/
 
 # Object files / libraries
 *.o
