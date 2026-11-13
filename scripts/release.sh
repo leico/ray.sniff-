@@ -155,8 +155,9 @@ echo "==> sign"
 codesign --force --options runtime --timestamp --sign "$IDENTITY" "$BUNDLE"
 codesign --verify --strict --verbose=2 "$BUNDLE"
 signed_team=$(codesign -dv "$BUNDLE" 2>&1 | sed -n 's/^TeamIdentifier=//p')
-[[ "$signed_team" == "$TEAM_ID" ]] || die "signed with team '$signed_team', expected $TEAM_ID"
+# Neither message prints a Team ID (it could be an employer's).
 is_forbidden "$signed_team" && die "signed with a team in RAYSNIFF_FORBIDDEN_TEAM_IDS"
+[[ "$signed_team" == "$TEAM_ID" ]] || die "the signature's TeamIdentifier is not RAYSNIFF_TEAM_ID"
 
 # --- notarize ---------------------------------------------------------------
 
