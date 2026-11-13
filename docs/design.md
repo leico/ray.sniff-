@@ -381,6 +381,7 @@ queue dropped_bytes <n>      キューが満杯で捨てたバイト数
   - 署名の identity は SHA-1 ハッシュか Team ID を含む完全な名前で明示する（キーチェーンに Developer ID Application が複数あると、名前の一部だけでは曖昧になるため）
   - 手順は `scripts/release.sh` にまとめる（2026-11-13）。Release でビルド → Universal か確認 → `codesign --options runtime --timestamp` → `notarytool submit --wait` → `stapler staple` → Max のパッケージの形（`externals/`、`help/`、README、LICENSE、`package-info.json`）で `dist/ray.sniff-<version>-macos.zip` に固める。identity と notarytool のプロファイルは環境変数で必ず渡す（既定値は持たない）。アップロードはしない
   - 事前チェック（identity が Developer ID Application のちょうど 1 つに一致するか、バージョンの一致、未コミットの変更）は `--check` で単独に動かせる。`tests/release_script_test.sh` が、`security` と `git` を偽物に差し替えて 10 の場面を確かめる（会社と個人の両方に一致する名前を止める、など）。公証とステープルは実際に動かして確かめるしかない
+  - **実際に動かして確認（2026-11-13）**：`.mxo` にもステープルできた（`stapler validate` が通る。zip から取り出した後でも通る）。署名は hardened runtime とタイムスタンプ付き。新しく加入したアカウントの最初の公証は、待ち時間が長かった
   - Max SDK の署名（`MAX_SDK_CODESIGN_IDENTITY`）は使わない。hardened runtime とタイムスタンプを付けず、identity が見つからないと黙って ad-hoc 署名になるため
 - [x] 実際にキャプチャして動作確認する（ChmodBPF を入れた環境か root 権限で）。Max 上での動作確認（2026-11-11、Max 9。10 章の手順 6）
 
