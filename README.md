@@ -150,7 +150,7 @@ Design notes (in Japanese) are in [docs/design.md](docs/design.md).
 
 `scripts/release.sh` builds the external, signs it with a Developer ID, notarizes and staples it, and packs the package into `dist/ray.sniff-<version>-macos.zip`. It needs a Developer ID Application certificate in the keychain and a notarytool profile (`xcrun notarytool store-credentials`).
 
-1. Copy `scripts/release.local.env.example` to `scripts/release.local.env` (not tracked by git) and set your Team ID and notarytool profile. List Team IDs that must never be used on your machine in `RAYSNIFF_FORBIDDEN_TEAM_IDS`.
+1. Copy `scripts/release.local.env.example` to `scripts/release.local.env` (not tracked by git) and set your Team ID and notarytool profile. List Team IDs that must never be used on your machine in `RAYSNIFF_FORBIDDEN_TEAM_IDS`, separated by spaces. The file is read strictly: `KEY=value` lines only (no `export`, `"double quotes"` only); any other line stops the script.
 2. `scripts/release.sh --check` shows the identity it will use.
 3. `scripts/release.sh` asks for confirmation, then does the rest. Nothing is uploaded.
 

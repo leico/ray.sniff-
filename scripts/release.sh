@@ -14,6 +14,8 @@
 #                                (xcrun notarytool store-credentials)
 #   RAYSNIFF_FORBIDDEN_TEAM_IDS  Team IDs that must never be used, separated
 #                                by spaces (e.g. an employer's), optional
+# The file is read strictly (format in the .example); a line it can't read
+# stops the script instead of being skipped.
 #
 # The signing identity is the one "Developer ID Application" identity of
 # RAYSNIFF_TEAM_ID in the keychain; anything else stops the script. Before
@@ -41,20 +43,56 @@ cd "$ROOT"
 CONFIG="scripts/release.local.env"
 [[ -f "$CONFIG" ]] || die "$CONFIG not found (copy scripts/release.local.env.example and fill it in)"
 
-# Reads KEY=value from the config without running it as shell code. Quotes
-# around the value are removed. Prints nothing if the key is missing.
-config() {
-    sed -nE "s/^[[:space:]]*$1[[:space:]]*=[[:space:]]*\"?([^\"#]*)\"?[[:space:]]*(#.*)?$/\1/p" "$CONFIG" \
-        | tail -1 | sed -E 's/[[:space:]]+$//'
-}
+# The config is read strictly and never run as shell code: every line must be
+# blank, a comment, or KEY=value with a known KEY. A value may be wrapped in
+# "double quotes" and followed by a # comment. Anything else (export, single
+# quotes, spaces around =, unknown or repeated keys) stops the script, so a
+# mistyped line can't silently empty a setting such as the forbidden list.
+# Error messages give the line number but not the value.
+TEAM_ID=""
+PROFILE=""
+FORBIDDEN=""
+seen=" "
+re_line='^([A-Za-z_][A-Za-z0-9_]*)=(.*)$'
+re_quoted='^"([^"]*)"[[:space:]]*(#.*)?$'
+re_plain="^([^\"'#]*)(#.*)?\$"
+lineno=0
+while IFS= read -r line || [[ -n "$line" ]]; do
+    lineno=$((lineno + 1))
+    line=${line%$'\r'}
+    [[ "$line" =~ ^[[:space:]]*(#.*)?$ ]] && continue
+    [[ "$line" =~ $re_line ]] \
+        || die "$CONFIG line $lineno: expected KEY=value (no export, no spaces around =)"
+    key=${BASH_REMATCH[1]}
+    rest=${BASH_REMATCH[2]}
+    if [[ "$rest" =~ $re_quoted ]]; then
+        value=${BASH_REMATCH[1]}
+    elif [[ "$rest" =~ $re_plain ]]; then
+        value=${BASH_REMATCH[1]}
+        value=${value%"${value##*[![:space:]]}"}   # trailing spaces
+    else
+        die "$CONFIG line $lineno: quote values with \"double quotes\" only"
+    fi
+    [[ "$seen" != *" $key "* ]] || die "$CONFIG line $lineno: $key is set twice"
+    seen="$seen$key "
+    case "$key" in
+        RAYSNIFF_TEAM_ID)            TEAM_ID=$value ;;
+        RAYSNIFF_NOTARY_PROFILE)     PROFILE=$value ;;
+        RAYSNIFF_FORBIDDEN_TEAM_IDS) FORBIDDEN=$value ;;
+        *) die "$CONFIG line $lineno: unknown key $key" ;;
+    esac
+done < "$CONFIG"
 
-TEAM_ID=$(config RAYSNIFF_TEAM_ID)
-PROFILE=$(config RAYSNIFF_NOTARY_PROFILE)
-FORBIDDEN=$(config RAYSNIFF_FORBIDDEN_TEAM_IDS)
-
+re_team='^[A-Z0-9]{10}$'
 [[ -n "$TEAM_ID" ]] || die "set RAYSNIFF_TEAM_ID in $CONFIG"
-[[ "$TEAM_ID" =~ ^[A-Z0-9]{10}$ ]] || die "RAYSNIFF_TEAM_ID must be 10 capital letters or digits: $TEAM_ID"
+[[ "$TEAM_ID" =~ $re_team ]] || die "RAYSNIFF_TEAM_ID must be 10 capital letters or digits"
+for id in $FORBIDDEN; do
+    [[ "$id" =~ $re_team ]] \
+        || die "RAYSNIFF_FORBIDDEN_TEAM_IDS: each entry must be 10 capital letters or digits, separated by spaces"
+done
 [[ -n "$PROFILE" ]] || die "set RAYSNIFF_NOTARY_PROFILE in $CONFIG"
+[[ "$PROFILE" =~ ^[A-Za-z0-9._-]+$ ]] \
+    || die "RAYSNIFF_NOTARY_PROFILE may contain only letters, digits, '.', '_' and '-'"
 
 is_forbidden() {
     local id
@@ -63,7 +101,7 @@ is_forbidden() {
     done
     return 1
 }
-is_forbidden "$TEAM_ID" && die "RAYSNIFF_TEAM_ID $TEAM_ID is in RAYSNIFF_FORBIDDEN_TEAM_IDS"
+is_forbidden "$TEAM_ID" && die "RAYSNIFF_TEAM_ID is in RAYSNIFF_FORBIDDEN_TEAM_IDS"
 
 # --- signing identity -------------------------------------------------------
 
@@ -118,7 +156,7 @@ codesign --force --options runtime --timestamp --sign "$IDENTITY" "$BUNDLE"
 codesign --verify --strict --verbose=2 "$BUNDLE"
 signed_team=$(codesign -dv "$BUNDLE" 2>&1 | sed -n 's/^TeamIdentifier=//p')
 [[ "$signed_team" == "$TEAM_ID" ]] || die "signed with team '$signed_team', expected $TEAM_ID"
-is_forbidden "$signed_team" && die "signed with forbidden team $signed_team"
+is_forbidden "$signed_team" && die "signed with a team in RAYSNIFF_FORBIDDEN_TEAM_IDS"
 
 # --- notarize ---------------------------------------------------------------
 

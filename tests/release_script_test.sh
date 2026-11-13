@@ -118,6 +118,47 @@ RAYSNIFF_FORBIDDEN_TEAM_IDS=$EMPLOYER"
 check "the file's forbidden list applies even if the environment clears it" fail "is in RAYSNIFF_FORBIDDEN_TEAM_IDS" "checks passed" \
     -- RAYSNIFF_FORBIDDEN_TEAM_IDS=""
 
+# --- a forbidden list that can't be read stops instead of being empty ---
+base="RAYSNIFF_TEAM_ID=$PERSONAL
+RAYSNIFF_NOTARY_PROFILE=notarytool-personal"
+CONFIG="$base
+RAYSNIFF_FORBIDDEN_TEAM_IDS='$EMPLOYER'"
+check "a single-quoted value stops" fail "double quotes" "checks passed"
+CONFIG="$base
+RAYSNIFF_FORBIDDEN_TEAM_IDS=$EMPLOYER,OTHER00001"
+check "a comma-separated forbidden list stops" fail "separated by spaces" "checks passed"
+CONFIG="$base
+RAYSNIFF_FORBIDDEN_TEAM_IDS=employer01"
+check "a lowercase forbidden Team ID stops" fail "separated by spaces" "checks passed"
+CONFIG="$base
+export RAYSNIFF_FORBIDDEN_TEAM_IDS=$EMPLOYER"
+check "an export line stops" fail "line 3: expected KEY=value" "checks passed"
+CONFIG="$base
+RAYSNIFF_FORBIDDEN_TEAM_IDS=\"$EMPLOYER\" \"OTHER00001\""
+check "several quoted values on one line stop" fail "double quotes" "checks passed"
+CONFIG="$base
+RAYSNIFF_FORBIDDEN_TEAM_IDS = $EMPLOYER"
+check "spaces around = stop" fail "expected KEY=value" "checks passed"
+CONFIG="$base
+RAYSNIFF_FORBIDEN_TEAM_IDS=$EMPLOYER"
+check "a misspelled key stops" fail "unknown key RAYSNIFF_FORBIDEN_TEAM_IDS" "checks passed"
+CONFIG="$base
+RAYSNIFF_TEAM_ID=$EMPLOYER"
+check "a key set twice stops" fail "RAYSNIFF_TEAM_ID is set twice" "checks passed"
+CONFIG="RAYSNIFF_TEAM_ID=$EMPLOYER
+RAYSNIFF_NOTARY_PROFILE=notarytool-personal
+# comment line
+
+RAYSNIFF_FORBIDDEN_TEAM_IDS=\"OTHER00001 $EMPLOYER\"  # two entries"
+check "comments, blank lines and a quoted list are read" fail "is in RAYSNIFF_FORBIDDEN_TEAM_IDS" "checks passed"
+CONFIG="RAYSNIFF_TEAM_ID=$EMPLOYER
+RAYSNIFF_NOTARY_PROFILE=notarytool-personal
+RAYSNIFF_FORBIDDEN_TEAM_IDS=$EMPLOYER"
+check "the forbidden-team message does not print the Team ID" fail "is in RAYSNIFF_FORBIDDEN_TEAM_IDS" "$EMPLOYER"
+CONFIG="RAYSNIFF_TEAM_ID=$PERSONAL
+RAYSNIFF_NOTARY_PROFILE='notarytool-personal'"
+check "a single-quoted notary profile stops before building" fail "double quotes" "checks passed"
+
 # --- the identity must be exactly one Developer ID Application ---
 CONFIG="RAYSNIFF_TEAM_ID=NOSUCHTEAM
 RAYSNIFF_NOTARY_PROFILE=notarytool-personal"
